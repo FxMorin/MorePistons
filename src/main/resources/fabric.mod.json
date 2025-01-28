@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "PistonModTemplate",
+  "description": "PistonLib Mod Template",
+  "authors": [
+    "FX"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/pistonmodtemplate/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "ca.fxco.pistonmodtemplate.client.PistonModTemplateClient"
+    ],
+    "main": [
+      "ca.fxco.pistonmodtemplate.PistonModTemplate"
+    ],
+    "pistonlib": [
+      "ca.fxco.pistonmodtemplate.PistonModTemplate"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "pistonlib": ">=1.1.0"
+  }
+}
