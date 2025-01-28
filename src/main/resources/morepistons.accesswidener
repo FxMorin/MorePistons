@@ -1,0 +1,40 @@
+accessWidener	v1	named
+
+# Set up PistonStructureResolver extending for custom classes
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver level Lnet/minecraft/world/level/Level;
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver pistonPos Lnet/minecraft/core/BlockPos;
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver extending Z
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver startPos Lnet/minecraft/core/BlockPos;
+mutable field  net/minecraft/world/level/block/piston/PistonStructureResolver startPos Lnet/minecraft/core/BlockPos;
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver pushDirection Lnet/minecraft/core/Direction;
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver toPush Ljava/util/List;
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver toDestroy Ljava/util/List;
+accessible field  net/minecraft/world/level/block/piston/PistonStructureResolver pistonDirection Lnet/minecraft/core/Direction;
+
+# Set up PistonMovingBlockEntity extending for custom classes
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity movedState Lnet/minecraft/world/level/block/state/BlockState;
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity direction Lnet/minecraft/core/Direction;
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity extending Z
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity isSourcePiston Z
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity progress F
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity progressO F
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity lastTicked J
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity deathTicks I
+accessible field net/minecraft/world/level/block/piston/PistonMovingBlockEntity NOCLIP Ljava/lang/ThreadLocal;
+extendable method net/minecraft/world/level/block/piston/PistonMovingBlockEntity getExtendedProgress (F)F
+extendable method net/minecraft/world/level/block/piston/PistonMovingBlockEntity getCollisionRelatedBlockState ()Lnet/minecraft/world/level/block/state/BlockState;
+extendable method net/minecraft/world/level/block/piston/PistonMovingBlockEntity isStickyForEntities ()Z
+
+# Set FeatureFlag constructor to public
+accessible method net/minecraft/world/flag/FeatureFlag <init> (Lnet/minecraft/world/flag/FeatureFlagUniverse;I)V
+
+extendable method net/minecraft/client/gui/screens/inventory/tooltip/ClientBundleTooltip getContentXOffset (I)I
+extendable method net/minecraft/client/gui/screens/inventory/tooltip/ClientBundleTooltip gridSizeY ()I
+
+accessible method net/minecraft/world/item/component/BundleContents <init> (Ljava/util/List;Lorg/apache/commons/lang3/math/Fraction;I)V
+accessible field net/minecraft/world/item/crafting/RecipeManager recipes Lnet/minecraft/world/item/crafting/RecipeMap;
+mutable field net/minecraft/world/inventory/TransientCraftingContainer items Lnet/minecraft/core/NonNullList;
+accessible field net/minecraft/world/inventory/TransientCraftingContainer items Lnet/minecraft/core/NonNullList;
+accessible class net/minecraft/world/inventory/MenuType
+
+# TODO remove those what isn't used in morepistons

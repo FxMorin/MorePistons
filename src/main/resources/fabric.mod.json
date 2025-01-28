@@ -17,6 +17,9 @@
     "client": [
       "ca.fxco.morepistons.client.MorePistonsClient"
     ],
+    "fabric-datagen": [
+      "ca.fxco.morepistons.datagen.MorePistonsDatagen"
+    ],
     "main": [
       "ca.fxco.morepistons.MorePistons"
     ],
@@ -28,6 +31,6 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}",
-    "pistonlib": ">=1.1.0"
+    "pistonlib": ">=1.1.0-alpha"
   }
 }
