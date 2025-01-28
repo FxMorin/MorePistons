@@ -1,4 +1,4 @@
-package ca.fxco.pistonmodtemplate.base;
+package ca.fxco.morepistons.base;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,14 +10,14 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.function.Function;
 
-import static ca.fxco.pistonmodtemplate.PistonModTemplate.id;
+import static ca.fxco.morepistons.MorePistons.id;
 
 public class ModBlocks {
 
     public static final Block TEMPLATE_BLOCK = register(
             "template_block",
             Block::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BLOCK)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
     );
 
     private static <T extends Block> T register(String name, Function<BlockBehaviour.Properties, T> function,

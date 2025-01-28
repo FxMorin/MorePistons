@@ -1,10 +1,10 @@
-package ca.fxco.pistonmodtemplate.base;
+package ca.fxco.morepistons.base;
 
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickRules;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyGroup;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyGroups;
 
-import static ca.fxco.pistonmodtemplate.PistonModTemplate.id;
+import static ca.fxco.morepistons.MorePistons.id;
 
 public class ModStickyGroups {
 

@@ -1,4 +1,4 @@
-package ca.fxco.pistonmodtemplate.base;
+package ca.fxco.morepistons.base;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -8,10 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 
-import java.util.Map;
 import java.util.function.Function;
 
-import static ca.fxco.pistonmodtemplate.PistonModTemplate.id;
+import static ca.fxco.morepistons.MorePistons.id;
 
 public class ModItems {
 

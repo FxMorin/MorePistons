@@ -1,11 +1,11 @@
-package ca.fxco.pistonmodtemplate;
+package ca.fxco.morepistons;
 
-import ca.fxco.pistonmodtemplate.base.*;
+import ca.fxco.morepistons.base.*;
 import ca.fxco.pistonlib.api.PistonLibInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 
-public class PistonModTemplate implements ModInitializer, PistonLibInitializer {
+public class MorePistons implements ModInitializer, PistonLibInitializer {
 
     public static final String MOD_ID = "pistonmodtemplate";
 

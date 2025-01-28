@@ -2,24 +2,26 @@
   "schemaVersion": 1,
   "id": "${mod_id}",
   "version": "${version}",
-  "name": "PistonModTemplate",
-  "description": "PistonLib Mod Template",
+  "name": "MorePistons",
+  "description": "The main PistonLib mod, which showcases the majority of its features",
   "authors": [
-    "FX"
+    "FX",
+    "Space Walker",
+    "1Foxy2"
   ],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/pistonmodtemplate/icon.png",
+  "icon": "assets/morepistons/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
-      "ca.fxco.pistonmodtemplate.client.PistonModTemplateClient"
+      "ca.fxco.morepistons.client.MorePistonsClient"
     ],
     "main": [
-      "ca.fxco.pistonmodtemplate.PistonModTemplate"
+      "ca.fxco.morepistons.MorePistons"
     ],
     "pistonlib": [
-      "ca.fxco.pistonmodtemplate.PistonModTemplate"
+      "ca.fxco.morepistons.MorePistons"
     ]
   },
   "depends": {
