@@ -3,6 +3,7 @@ package ca.fxco.morepistons;
 import ca.fxco.morepistons.base.*;
 import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.PistonLibInitializer;
+import ca.fxco.pistonlib.api.config.ConfigFieldEntrypoint;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -10,7 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MorePistons implements ModInitializer, PistonLibInitializer {
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
+public class MorePistons implements ModInitializer, PistonLibInitializer, ConfigFieldEntrypoint {
 
     public static final String MOD_ID = "morepistons";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -19,8 +24,11 @@ public class MorePistons implements ModInitializer, PistonLibInitializer {
     public void onInitialize() {}
 
     @Override
-    public void initialize() {
-        PistonLib.getConfigManager().loadConfigFields(MorePistonsConfig.class.getFields());
+    public void initialize() {}
+
+    @Override
+    public Map<String, List<Field>> getConfigFields() {
+        return Map.of("pistonlib", List.of(MorePistonsConfig.class.getFields()));
     }
 
     @Override
