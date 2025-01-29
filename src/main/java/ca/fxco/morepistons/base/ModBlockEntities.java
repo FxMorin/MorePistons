@@ -1,12 +1,11 @@
 package ca.fxco.morepistons.base;
 
 import ca.fxco.morepistons.blocks.autoCraftingBlock.AutoCraftingBlockEntity;
-import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurableMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.fastPiston.FastMovingBlockEntity;
-import ca.fxco.pistonlib.blocks.mergeBlock.MergeBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.speedPiston.SpeedMovingBlockEntity;
 
+import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicMovingBlockEntity;
 import ca.fxco.pistonlib.blocks.pistons.movableBlockEntities.MBEMovingBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 
@@ -15,11 +14,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-import static ca.fxco.pistonlib.PistonLib.id;
+import static ca.fxco.morepistons.MorePistons.id;
 
 public class ModBlockEntities {
 
     // Pistons
+    public static final BlockEntityType<BasicMovingBlockEntity> BASIC_MOVING_BLOCK_ENTITY;
     public static final BlockEntityType<ConfigurableMovingBlockEntity> CONFIGURABLE_MOVING_BLOCK_ENTITY;
     public static final BlockEntityType<SpeedMovingBlockEntity> SPEED_MOVING_BLOCK_ENTITY;
     public static final BlockEntityType<FastMovingBlockEntity> FAST_MOVING_BLOCK_ENTITY;
@@ -30,6 +30,10 @@ public class ModBlockEntities {
 
     static {
         // Pistons
+        BASIC_MOVING_BLOCK_ENTITY = register(
+                "basic",
+                BasicMovingBlockEntity::new
+        );
         CONFIGURABLE_MOVING_BLOCK_ENTITY = register(
                 "configurable",
                 ConfigurableMovingBlockEntity::new
@@ -52,7 +56,7 @@ public class ModBlockEntities {
                 BuiltInRegistries.BLOCK_ENTITY_TYPE,
                 id("auto_crafting_block"),
                 FabricBlockEntityTypeBuilder.create(AutoCraftingBlockEntity::new, ModBlocks.AUTO_CRAFTING_BLOCK)
-                        .build(null)
+                        .build()
         );
     }
 

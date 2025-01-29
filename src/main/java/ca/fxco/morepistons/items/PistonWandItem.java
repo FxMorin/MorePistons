@@ -1,8 +1,8 @@
 package ca.fxco.morepistons.items;
 
-import ca.fxco.pistonlib.base.ModDataComponents;
+import ca.fxco.morepistons.base.ModDataComponents;
+import ca.fxco.morepistons.items.tooltip.SingleItemTooltip;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonBaseBlock;
-import ca.fxco.pistonlib.helpers.SingleItemTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

@@ -2,6 +2,7 @@ package ca.fxco.morepistons.blocks.halfBlocks;
 
 import java.util.Map;
 
+import ca.fxco.morepistons.utils.HalfBlockUtils;
 import ca.fxco.pistonlib.base.ModStickyGroups;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.Nullable;
@@ -9,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickRules;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyGroup;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyType;
-import ca.fxco.pistonlib.helpers.HalfBlockUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import static ca.fxco.pistonlib.helpers.HalfBlockUtils.SIDES_LIST;
+import static ca.fxco.morepistons.utils.HalfBlockUtils.SIDES_LIST;
 
 public class HalfSlimeBlock extends Block {
 

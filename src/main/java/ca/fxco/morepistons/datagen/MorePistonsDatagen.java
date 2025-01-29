@@ -3,8 +3,6 @@ package ca.fxco.morepistons.datagen;
 import ca.fxco.morepistons.MorePistons;
 import org.slf4j.Logger;
 
-import ca.fxco.pistonlib.PistonLib;
-
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 

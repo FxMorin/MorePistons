@@ -20,7 +20,6 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.PistonType;
@@ -79,20 +78,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 						.stairs(ModBlocks.OBSIDIAN_STAIR_BLOCK)
 						.getFamily();
 				generateRecipes(obsidianFamily, FeatureFlags.VANILLA_SET);
-
-				Map<Block, Block> slipperyBlockRecipes = Map.of(
-						ModBlocks.SLIPPERY_REDSTONE_BLOCK, Blocks.REDSTONE_BLOCK,
-						ModBlocks.SLIPPERY_SLIME_BLOCK, Blocks.SLIME_BLOCK,
-						ModBlocks.SLIPPERY_STONE_BLOCK, Blocks.STONE
-				);
-				for (Map.Entry<Block, Block> entry : slipperyBlockRecipes.entrySet()) {
-					Block baseBlock = entry.getValue();
-					ShapelessRecipeBuilder.shapeless(itemRegistry, RecipeCategory.MISC, entry.getKey(), 1)
-							.requires(baseBlock)
-							.requires(Items.POTION)
-							.unlockedBy(getHasName(baseBlock), has(baseBlock))
-							.save(exporter);
-				}
 
 				Map<Block, Item> simpleCrushingRecipes = Map.of(
 						Blocks.IRON_ORE, Items.RAW_IRON,

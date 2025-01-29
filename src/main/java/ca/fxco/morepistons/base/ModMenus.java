@@ -15,5 +15,5 @@ public class ModMenus {
         return Registry.register(BuiltInRegistries.MENU, string, new MenuType<>(menuSupplier, FeatureFlags.VANILLA_SET));
     }
 
-    public static void bootstrap() { }
+    public static void bootstrap() {}
 }

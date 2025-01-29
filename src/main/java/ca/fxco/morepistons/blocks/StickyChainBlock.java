@@ -3,7 +3,7 @@ package ca.fxco.morepistons.blocks;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.fxco.pistonlib.PistonLibConfig;
+import ca.fxco.morepistons.MorePistonsConfig;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyType;
 import lombok.Getter;
 import net.minecraft.Util;
@@ -55,7 +55,7 @@ public class StickyChainBlock extends ChainBlock {
 
     @Override
     public Map<Direction, StickyType> pl$stickySides(BlockState state) {
-        if (PistonLibConfig.strongStickyChains) {
+        if (MorePistonsConfig.strongStickyChains) {
             return switch (state.getValue(AXIS)) {
                 case X -> StickyChainBlock.getChainSidesX_strong();
                 case Y -> StickyChainBlock.getChainSidesY_strong();
@@ -72,7 +72,7 @@ public class StickyChainBlock extends ChainBlock {
     @Override
     public StickyType pl$sideStickiness(BlockState state, Direction dir) {
         return dir.getAxis() == state.getValue(AXIS) ?
-                (PistonLibConfig.strongStickyChains ? StickyType.STRONG : StickyType.STICKY) :
+                (MorePistonsConfig.strongStickyChains ? StickyType.STRONG : StickyType.STICKY) :
                 StickyType.NO_STICK;
     }
 }

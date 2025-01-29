@@ -1,5 +1,6 @@
 package ca.fxco.morepistons.base;
 
+import ca.fxco.morepistons.MorePistonsConfig;
 import ca.fxco.morepistons.blocks.*;
 import ca.fxco.morepistons.blocks.autoCraftingBlock.AutoCraftingBlock;
 import ca.fxco.morepistons.blocks.halfBlocks.*;
@@ -7,16 +8,9 @@ import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurableMovingB
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurablePistonBaseBlock;
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurablePistonHeadBlock;
 import ca.fxco.morepistons.blocks.pistons.longPiston.LongPistonHeadBlock;
-import ca.fxco.morepistons.blocks.pistons.slipperyPiston.SlipperyMovingBlock;
-import ca.fxco.morepistons.blocks.pistons.slipperyPiston.SlipperyPistonBaseBlock;
-import ca.fxco.morepistons.blocks.pistons.slipperyPiston.SlipperyPistonHeadBlock;
 import ca.fxco.morepistons.blocks.pistons.veryStickyPiston.StickyPistonHeadBlock;
 import ca.fxco.morepistons.blocks.pistons.veryStickyPiston.VeryStickyPistonBaseBlock;
-import ca.fxco.morepistons.blocks.slipperyBlocks.BaseSlipperyBlock;
-import ca.fxco.morepistons.blocks.slipperyBlocks.SlipperyRedstoneBlock;
-import ca.fxco.morepistons.blocks.slipperyBlocks.SlipperySlimeBlock;
 import ca.fxco.morepistons.pistonLogic.controller.*;
-import ca.fxco.pistonlib.PistonLibConfig;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyType;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicMovingBlock;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonArmBlock;
@@ -46,7 +40,7 @@ public class ModBlocks {
 
     public static final AutoCraftingBlock AUTO_CRAFTING_BLOCK = register("auto_crafting_block",
             AutoCraftingBlock::new,
-            Properties.ofFullCopy(Blocks.CRAFTING_TABLE).pl$setDisabled(() -> !PistonLibConfig.autoCraftingBlock)); //TODO move into MorePiston config
+            Properties.ofFullCopy(Blocks.CRAFTING_TABLE).pl$setDisabled(() -> !MorePistonsConfig.autoCraftingBlock)); //TODO move into MorePiston config
 
 
     // Half Blocks
@@ -72,18 +66,19 @@ public class ModBlocks {
     public static final Block ERASE_BLOCK = register("erase_block", EraseBlock::new, Blocks.REDSTONE_BLOCK);
     public static final Block HEAVY_BLOCK = register("heavy_block", properties -> new WeightBlock(properties, 2), Blocks.IRON_BLOCK);
 
-    // Slippery Blocks
-    // These blocks if they are not touching a solid surface
-    public static final Block SLIPPERY_SLIME_BLOCK = register("slippery_slime_block", SlipperySlimeBlock::new, Blocks.SLIME_BLOCK);
-    public static final Block SLIPPERY_REDSTONE_BLOCK = register("slippery_redstone_block", SlipperyRedstoneBlock::new, Blocks.REDSTONE_BLOCK);
-    public static final Block SLIPPERY_STONE_BLOCK = register("slippery_stone_block", BaseSlipperyBlock::new, Blocks.STONE);
-
     // Obsidian Blocks
     public static final Block OBSIDIAN_SLAB_BLOCK = register("obsidian_slab_block", ObsidianSlabBlock::new, Blocks.OBSIDIAN);
     public static final Block OBSIDIAN_STAIR_BLOCK = register("obsidian_stair_block", properties -> new StairBlock(Blocks.OBSIDIAN.defaultBlockState(), properties), Properties.ofFullCopy(Blocks.OBSIDIAN));
 
     // Piston Blocks should always be initialized in the following order:
     // base piston blocks, Piston Arms, Piston heads, Moving Pistons
+
+    // Basic Piston
+    // The vanilla piston but cooler
+    public static final BasicPistonBaseBlock BASIC_PISTON = registerPiston("basic_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.DEFAULT), properties));
+    public static final BasicPistonBaseBlock BASIC_STICKY_PISTON = registerPiston("basic_sticky_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.STICKY), properties));
+    public static final BasicPistonHeadBlock BASIC_PISTON_HEAD = registerPistonHead("basic_piston_head", BasicPistonHeadBlock::new);
+    public static final BasicMovingBlock BASIC_MOVING_BLOCK = registerMovingBlock("basic_moving_block", BasicMovingBlock::new);
 
     // Configurable Piston - Testing only
     // The one and only configurable piston. It can do mostly everything that the other pistons can do, allowing you
@@ -137,21 +132,12 @@ public class ModBlocks {
     public static final BasicPistonHeadBlock STICKY_PISTON_HEAD = registerPistonHead("very_sticky_piston_head", StickyPistonHeadBlock::new);
     public static final BasicMovingBlock STICKY_MOVING_BLOCK = registerMovingBlock("very_sticky_moving_block", BasicMovingBlock::new);
 
-
     // Front Powered Piston
     // Normal piston but can be powered through the front
     public static final BasicPistonBaseBlock FRONT_POWERED_PISTON = registerPiston("front_powered_piston", properties -> new BasicPistonBaseBlock(new FrontPoweredPistonController(PistonType.DEFAULT), properties));
     public static final BasicPistonBaseBlock FRONT_POWERED_STICKY_PISTON = registerPiston("front_powered_sticky_piston", properties -> new BasicPistonBaseBlock(new FrontPoweredPistonController(PistonType.STICKY), properties));
     public static final BasicPistonHeadBlock FRONT_POWERED_PISTON_HEAD = registerPistonHead("front_powered_piston_head", BasicPistonHeadBlock::new);
     public static final BasicMovingBlock FRONT_POWERED_MOVING_BLOCK = registerMovingBlock("front_powered_moving_block", BasicMovingBlock::new);
-
-
-    // Slippery Piston
-    // It's just a normal piston except its slippery
-    public static final BasicPistonBaseBlock SLIPPERY_PISTON = registerPiston("slippery_piston", properties -> new SlipperyPistonBaseBlock(new VanillaPistonController(PistonType.DEFAULT), properties));
-    public static final BasicPistonBaseBlock SLIPPERY_STICKY_PISTON = registerPiston("slippery_sticky_piston", properties -> new SlipperyPistonBaseBlock(new VanillaPistonController(PistonType.STICKY), properties));
-    public static final BasicPistonHeadBlock SLIPPERY_PISTON_HEAD = registerPistonHead("slippery_piston_head", SlipperyPistonHeadBlock::new);
-    public static final SlipperyMovingBlock SLIPPERY_MOVING_BLOCK = registerMovingBlock("slippery_moving_block", SlipperyMovingBlock::new);
 
     // Super Piston
     // What's push limit? What is super sticky?
@@ -162,8 +148,7 @@ public class ModBlocks {
 
     // MBE Piston
     // A piston that can move block entities
-    public static final BasicPistonBaseBlock MBE_PISTON = registerPiston("mbe_piston",
-            createMBEPistonBlock(PistonType.DEFAULT));
+    public static final BasicPistonBaseBlock MBE_PISTON = registerPiston("mbe_piston", createMBEPistonBlock(PistonType.DEFAULT));
     public static final BasicPistonBaseBlock MBE_STICKY_PISTON = registerPiston("mbe_sticky_piston", createMBEPistonBlock(PistonType.STICKY));
     public static final BasicPistonHeadBlock MBE_PISTON_HEAD_BLOCK = register("mbe_piston_head", BasicPistonHeadBlock::new, Properties.ofFullCopy(Blocks.PISTON_HEAD));
     public static final MBEMovingBlock MBE_MOVING_BLOCK = registerMovingBlock("mbe_moving_block", MBEMovingBlock::new);

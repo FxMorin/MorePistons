@@ -1,6 +1,6 @@
 package ca.fxco.morepistons.blocks.autoCraftingBlock;
 
-import ca.fxco.pistonlib.PistonLibConfig;
+import ca.fxco.morepistons.MorePistonsConfig;
 import ca.fxco.pistonlib.base.ModBlocks;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
@@ -96,7 +96,7 @@ public class AutoCraftingBlock extends BaseEntityBlock {
 
     @Override
     public boolean pl$usesConfigurablePistonMerging() {
-        return PistonLibConfig.autoCraftingBlock;
+        return MorePistonsConfig.autoCraftingBlock;
     }
 
     @Override
@@ -130,12 +130,12 @@ public class AutoCraftingBlock extends BaseEntityBlock {
 
     @Override
     public boolean pl$usesConfigurablePistonBehavior() {
-        return PistonLibConfig.autoCraftingBlock;
+        return MorePistonsConfig.autoCraftingBlock;
     }
 
     @Override
     public boolean pl$canPistonPush(Level level, BlockPos pos, BlockState state, Direction dir) {
-        return PistonLibConfig.movableAutoCraftingBlock;
+        return MorePistonsConfig.movableAutoCraftingBlock;
     }
 
     @Override

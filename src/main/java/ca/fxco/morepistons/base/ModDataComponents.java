@@ -1,0 +1,20 @@
+package ca.fxco.morepistons.base;
+
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.ItemStack;
+
+import static ca.fxco.morepistons.MorePistons.id;
+
+public class ModDataComponents {
+
+    public static final DataComponentType<ItemStack> WAND_ITEM = Registry.register(
+            BuiltInRegistries.DATA_COMPONENT_TYPE,
+            id("wand_item"),
+            DataComponentType.<ItemStack>builder().persistent(ItemStack.CODEC)
+                    .networkSynchronized(ItemStack.STREAM_CODEC).build()
+    );
+
+    public static void bootstrap() {}
+}

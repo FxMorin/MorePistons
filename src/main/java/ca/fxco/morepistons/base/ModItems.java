@@ -1,9 +1,9 @@
 package ca.fxco.morepistons.base;
 
 import ca.fxco.morepistons.MorePistons;
+import ca.fxco.morepistons.MorePistonsConfig;
 import ca.fxco.morepistons.items.PistonDebugWandItem;
 import ca.fxco.morepistons.items.PistonWandItem;
-import ca.fxco.pistonlib.PistonLibConfig;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -16,11 +16,13 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.function.Function;
 
+import static ca.fxco.morepistons.MorePistons.id;
 
 public class ModItems {
 
-    public static final PistonWandItem PISTON_WAND = register(MorePistons.id("piston_wand"), PistonWandItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
-    public static final PistonDebugWandItem PISTON_DEBUG_WAND = register(MorePistons.id("piston_debug_wand"), PistonDebugWandItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
+    public static final PistonWandItem PISTON_WAND = register(id("piston_wand"), PistonWandItem::new,
+            new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
+    public static final PistonDebugWandItem PISTON_DEBUG_WAND = register(id("piston_debug_wand"), PistonDebugWandItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
 
     public static final BlockItem HALF_SLIME_BLOCK = registerBlock(ModBlocks.HALF_SLIME_BLOCK);
     public static final BlockItem HALF_HONEY_BLOCK = registerBlock(ModBlocks.HALF_HONEY_BLOCK);
@@ -43,12 +45,16 @@ public class ModItems {
     public static final BlockItem ERASE_BLOCK = registerBlock(ModBlocks.ERASE_BLOCK);
     public static final BlockItem HEAVY_BLOCK = registerBlock(ModBlocks.HEAVY_BLOCK);
 
-    public static final BlockItem SLIPPERY_SLIME_BLOCK = registerBlock(ModBlocks.SLIPPERY_SLIME_BLOCK);
-    public static final BlockItem SLIPPERY_REDSTONE_BLOCK = registerBlock(ModBlocks.SLIPPERY_REDSTONE_BLOCK);
-    public static final BlockItem SLIPPERY_STONE_BLOCK = registerBlock(ModBlocks.SLIPPERY_STONE_BLOCK);
-
     public static final BlockItem OBSIDIAN_SLAB_BLOCK = registerBlock(ModBlocks.OBSIDIAN_SLAB_BLOCK);
     public static final BlockItem OBSIDIAN_STAIR_BLOCK = registerBlock(ModBlocks.OBSIDIAN_STAIR_BLOCK);
+
+    public static final BlockItem AUTO_CRAFTING_BLOCK = registerBlock(ModBlocks.AUTO_CRAFTING_BLOCK,
+            new Item.Properties().pl$setDisabled(() -> !MorePistonsConfig.autoCraftingBlock));
+
+    //region Pistons
+
+    public static final BlockItem BASIC_PISTON = registerBlock(ModBlocks.BASIC_PISTON);
+    public static final BlockItem BASIC_STICKY_PISTON = registerBlock(ModBlocks.BASIC_STICKY_PISTON);
 
     public static final BlockItem CONFIGURABLE_PISTON = registerBlock(ModBlocks.CONFIGURABLE_PISTON);
     public static final BlockItem CONFIGURABLE_STICKY_PISTON = registerBlock(ModBlocks.CONFIGURABLE_STICKY_PISTON);
@@ -66,14 +72,12 @@ public class ModItems {
     public static final BlockItem VERY_STICKY_PISTON = registerBlock(ModBlocks.VERY_STICKY_PISTON);
     public static final BlockItem FRONT_POWERED_PISTON = registerBlock(ModBlocks.FRONT_POWERED_PISTON);
     public static final BlockItem FRONT_POWERED_STICKY_PISTON = registerBlock(ModBlocks.FRONT_POWERED_STICKY_PISTON);
-    public static final BlockItem SLIPPERY_PISTON = registerBlock(ModBlocks.SLIPPERY_PISTON);
-    public static final BlockItem SLIPPERY_STICKY_PISTON = registerBlock(ModBlocks.SLIPPERY_STICKY_PISTON);
     public static final BlockItem SUPER_PISTON = registerBlock(ModBlocks.SUPER_PISTON);
     public static final BlockItem SUPER_STICKY_PISTON = registerBlock(ModBlocks.SUPER_STICKY_PISTON);
     public static final BlockItem MBE_PISTON = registerBlock(ModBlocks.MBE_PISTON);
     public static final BlockItem MBE_STICKY_PISTON = registerBlock(ModBlocks.MBE_STICKY_PISTON);
 
-    public static final BlockItem AUTO_CRAFTING_BLOCK = registerBlock(ModBlocks.AUTO_CRAFTING_BLOCK, new Item.Properties().pl$setDisabled(() -> !PistonLibConfig.autoCraftingBlock));
+    //endregion
 
     private static BlockItem registerBlock(Block block) {
         return registerBlock(block, new Item.Properties());
@@ -84,7 +88,8 @@ public class ModItems {
         return register(resourceKey, new BlockItem(block, itemProperties.setId(resourceKey)));
     }
 
-    private static <T extends Item> T register(ResourceLocation id, Function<Item.Properties, T> item, Item.Properties properties) {
+    private static <T extends Item> T register(ResourceLocation id, Function<Item.Properties, T> item,
+                                               Item.Properties properties) {
         ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, id);
         return Registry.register(BuiltInRegistries.ITEM, key, item.apply((properties.setId(key))));
     }

@@ -23,9 +23,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import static ca.fxco.morepistons.utils.HalfBlockUtils.SIDES_LIST;
+import static ca.fxco.morepistons.utils.HalfBlockUtils.getSlabShape;
 import static ca.fxco.pistonlib.PistonLib.DIRECTIONS;
-import static ca.fxco.pistonlib.helpers.HalfBlockUtils.SIDES_LIST;
-import static ca.fxco.pistonlib.helpers.HalfBlockUtils.getSlabShape;
 
 public class HalfHoneyBlock extends HoneyBlock {
 

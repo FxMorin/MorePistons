@@ -13,7 +13,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
-import static ca.fxco.pistonlib.PistonLib.id;
+import static ca.fxco.morepistons.MorePistons.id;
 
 public class ModCreativeModeTabs {
 
@@ -25,8 +25,8 @@ public class ModCreativeModeTabs {
 
     public static void bootstrap() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, GENERAL, FabricItemGroup.builder()
-                .icon(() -> new ItemStack(ca.fxco.pistonlib.base.ModItems.BASIC_STICKY_PISTON))
-                .title(Component.translatable("itemGroup.pistonlib.general"))
+                .icon(() -> new ItemStack(ModItems.BASIC_STICKY_PISTON))
+                .title(Component.translatable("itemGroup.morepistons.general"))
                 .displayItems((displayParameters, output) -> {
                     output.accept(ModItems.HALF_SLIME_BLOCK);
                     output.accept(ModItems.HALF_HONEY_BLOCK);
@@ -47,10 +47,6 @@ public class ModCreativeModeTabs {
                     output.accept(ModItems.WEAK_REDSTONE_BLOCK);
                     output.accept(ModItems.QUASI_BLOCK);
 
-                    output.accept(ModItems.SLIPPERY_SLIME_BLOCK);
-                    output.accept(ModItems.SLIPPERY_REDSTONE_BLOCK);
-                    output.accept(ModItems.SLIPPERY_STONE_BLOCK);
-
                     output.accept(ModItems.OBSIDIAN_SLAB_BLOCK);
                     output.accept(ModItems.OBSIDIAN_STAIR_BLOCK);
 
@@ -63,7 +59,7 @@ public class ModCreativeModeTabs {
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, PISTONS, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(ModItems.STRONG_STICKY_PISTON))
-                .title(Component.translatable("itemGroup.pistonlib.pistons"))
+                .title(Component.translatable("itemGroup.morepistons.pistons"))
                 .displayItems((displayParameters, output) -> {
                     for (PistonFamily family : PistonLibRegistries.PISTON_FAMILY) {
                         for (Block base : family.getBases().values()) {

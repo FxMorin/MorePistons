@@ -15,12 +15,16 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.blockstates.Variant;
 import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import java.util.Optional;
 
 import static ca.fxco.pistonlib.datagen.ModModelProvider.*;
 import static net.minecraft.client.data.models.BlockModelGenerators.createSimpleBlock;
@@ -29,6 +33,8 @@ import static net.minecraft.client.data.models.BlockModelGenerators.createSlab;
 public class ModModelProvider extends FabricModelProvider {
 
     public static final Logger LOGGER = PistonLib.LOGGER;
+
+	public static final ModelTemplate TEMPLATE_HALF_BLOCK = new ModelTemplate(Optional.of(PistonLib.id("block/template_half_block")), Optional.empty(), TextureSlot.TOP, TextureSlot.SIDE);
 
 	public ModModelProvider(FabricDataOutput dataOutput) {
 		super(dataOutput);
@@ -69,8 +75,6 @@ public class ModModelProvider extends FabricModelProvider {
         generator.createTrivialCube(ModBlocks.DRAG_BLOCK);
         generator.createTrivialCube(ModBlocks.STICKYLESS_BLOCK);
         generator.createTrivialCube(ModBlocks.GLUE_BLOCK);
-        generator.createTrivialCube(ModBlocks.SLIPPERY_REDSTONE_BLOCK);
-        generator.createTrivialCube(ModBlocks.SLIPPERY_STONE_BLOCK);
         generator.createTrivialCube(ModBlocks.MOVE_COUNTING_BLOCK);
 		generator.createTrivialCube(ModBlocks.WEAK_REDSTONE_BLOCK);
 		generator.createTrivialCube(ModBlocks.AUTO_CRAFTING_BLOCK);
@@ -84,7 +88,6 @@ public class ModModelProvider extends FabricModelProvider {
 		createTrivialBlock(ModBlocks.STICKY_TOP_BLOCK, new TextureMapping().put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.DEEPSLATE_BRICKS)).put(TextureSlot.TOP, TextureMapping.getBlockTexture(ModBlocks.STICKY_TOP_BLOCK)), ModelTemplates.CUBE_TOP, generator);
 
 		generator.blockStateOutput.accept(createSimpleBlock(ModBlocks.SLIMY_REDSTONE_BLOCK, ModelLocationUtils.getModelLocation(ModBlocks.SLIMY_REDSTONE_BLOCK)));
-		generator.blockStateOutput.accept(createSimpleBlock(ModBlocks.SLIPPERY_SLIME_BLOCK, ModelLocationUtils.getModelLocation(ModBlocks.SLIPPERY_SLIME_BLOCK)));
 
 		registerPoweredBlock(generator, ModBlocks.ALL_SIDED_OBSERVER);
 
@@ -124,5 +127,123 @@ public class ModModelProvider extends FabricModelProvider {
 		ResourceLocation outer = ModelTemplates.STAIRS_OUTER.create(block, textureBase, generator.modelOutput);
 		generator.blockStateOutput.accept(BlockModelGenerators.createStairs(block, inner, flat, outer));
 		generator.registerSimpleItemModel(block, flat);
+	}
+
+	public static void registerCubeTextureMap(BlockModelGenerators generator, Block block,
+											  ResourceLocation baseTexture, @Nullable String suffix) {
+		TextureMapping halfBlockTextureMap = new TextureMapping().put(TextureSlot.ALL, baseTexture);
+		if (suffix == null) {
+			ModelTemplates.CUBE_ALL.create(block, halfBlockTextureMap, generator.modelOutput);
+		} else {
+			ModelTemplates.CUBE_ALL.createWithSuffix(block, suffix, halfBlockTextureMap, generator.modelOutput);
+		}
+	}
+
+	public static void registerHalfBlockTextureMap(BlockModelGenerators generator, Block halfBlock, ResourceLocation baseTexture) {
+		registerHalfBlockTextureMap(generator, halfBlock, baseTexture, null);
+	}
+
+	public static void registerHalfBlockTextureMap(BlockModelGenerators generator, Block halfBlock, ResourceLocation baseTexture, @Nullable String suffix) {
+		TextureMapping halfBlockTextureMap = new TextureMapping().put(TextureSlot.SIDE, baseTexture).put(TextureSlot.TOP, baseTexture);
+		if (suffix == null) {
+			TEMPLATE_HALF_BLOCK.create(halfBlock, halfBlockTextureMap, generator.modelOutput);
+		} else {
+			TEMPLATE_HALF_BLOCK.createWithSuffix(halfBlock, suffix, halfBlockTextureMap, generator.modelOutput);
+		}
+	}
+
+	public static void registerBlockWithCustomModel(BlockModelGenerators generator, Block halfBlock) {
+		registerHalfBlock(generator, halfBlock, null);
+	}
+
+	public static void registerBlockWithCustomStates(BlockModelGenerators generator, Block halfBlock, PropertyDispatch customStates) {
+		generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(halfBlock, Variant.variant()
+				.with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(halfBlock))).with(customStates)
+		);
+	}
+
+	public static void registerHalfBlock(BlockModelGenerators generator, Block halfBlock, @Nullable Block base) {
+		generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+				halfBlock,
+				Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(halfBlock))
+		).with(generator.createColumnWithFacing()));
+
+		if (base != null) {
+			ResourceLocation baseTextureId = TextureMapping.getBlockTexture(base);
+
+			TextureMapping halfBlockTextureMap = new TextureMapping()
+					.put(TextureSlot.SIDE, baseTextureId)
+					.put(TextureSlot.TOP, baseTextureId);
+
+			TEMPLATE_HALF_BLOCK.create(halfBlock, halfBlockTextureMap, generator.modelOutput);
+		}
+	}
+
+	public static void registerPoweredBlock(BlockModelGenerators generator, Block block) {
+		ResourceLocation powerOff = ModelLocationUtils.getModelLocation(block);
+		ResourceLocation powerOn = ModelLocationUtils.getModelLocation(block, "_on");
+		registerBlockWithCustomStates(generator, block,
+				PropertyDispatch.property(BlockStateProperties.POWERED)
+						.select(false, Variant.variant().with(VariantProperties.MODEL, powerOff))
+						.select(true, Variant.variant().with(VariantProperties.MODEL, powerOn)));
+		registerCubeTextureMap(generator, block, powerOff, null);
+		registerCubeTextureMap(generator, block, powerOn, "_on");
+	}
+
+	public static PropertyDispatch createLitFacingBlockState(ResourceLocation offModelId, ResourceLocation onModelId) {
+		return PropertyDispatch
+				.properties(BlockStateProperties.FACING, BlockStateProperties.LIT)
+				.select(Direction.NORTH, false,
+						Variant.variant()
+								.with(VariantProperties.MODEL, offModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.SOUTH, false,
+						Variant.variant()
+								.with(VariantProperties.MODEL, offModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+				.select(Direction.EAST, false,
+						Variant.variant()
+								.with(VariantProperties.MODEL, offModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.WEST, false,
+						Variant.variant()
+								.with(VariantProperties.MODEL, offModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.DOWN, false,
+						Variant.variant()
+								.with(VariantProperties.MODEL, offModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
+				.select(Direction.UP, false,
+						Variant.variant()
+								.with(VariantProperties.MODEL, offModelId))
+				.select(Direction.NORTH, true,
+						Variant.variant()
+								.with(VariantProperties.MODEL, onModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.SOUTH, true,
+						Variant.variant()
+								.with(VariantProperties.MODEL, onModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+				.select(Direction.EAST, true,
+						Variant.variant()
+								.with(VariantProperties.MODEL, onModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.WEST, true,
+						Variant.variant()
+								.with(VariantProperties.MODEL, onModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.DOWN, true,
+						Variant.variant()
+								.with(VariantProperties.MODEL, onModelId)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
+				.select(Direction.UP, true,
+						Variant.variant()
+								.with(VariantProperties.MODEL, onModelId));
 	}
 }

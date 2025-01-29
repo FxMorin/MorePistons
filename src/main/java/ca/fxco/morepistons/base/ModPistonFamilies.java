@@ -3,23 +3,25 @@ package ca.fxco.morepistons.base;
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurableMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.fastPiston.FastMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.speedPiston.SpeedMovingBlockEntity;
-import ca.fxco.pistonlib.api.PistonLibRegistries;
 import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamilies;
 import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamily;
-import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamilyMember;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicMovingBlockEntity;
 import ca.fxco.pistonlib.blocks.pistons.movableBlockEntities.MBEMovingBlockEntity;
 import ca.fxco.pistonlib.pistonLogic.families.PistonBehaviorImpl;
 import ca.fxco.pistonlib.pistonLogic.families.PistonFamilyImpl;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.state.properties.PistonType;
 
-import java.util.Objects;
-
-import static ca.fxco.pistonlib.PistonLib.id;
+import static ca.fxco.morepistons.MorePistons.id;
 
 public class ModPistonFamilies {
+
+    public static final PistonFamily BASIC = register("basic", PistonFamilyImpl.builder()
+            .behavior(PistonBehaviorImpl.DEFAULT)
+            .base(PistonType.DEFAULT, ModBlocks.BASIC_PISTON)
+            .base(PistonType.STICKY, ModBlocks.BASIC_STICKY_PISTON)
+            .head(ModBlocks.BASIC_PISTON_HEAD)
+            .moving(ModBlocks.BASIC_MOVING_BLOCK)
+            .movingBlockEntity(ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
 
     public static final PistonFamily LONG = register("long", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.builder()
@@ -30,7 +32,7 @@ public class ModPistonFamilies {
             .arm(ModBlocks.LONG_PISTON_ARM)
             .head(ModBlocks.LONG_PISTON_HEAD)
             .moving(ModBlocks.LONG_MOVING_BLOCK)
-            .movingBlockEntity(ca.fxco.pistonlib.base.ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
+            .movingBlockEntity(ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
 
     public static final PistonFamily CONFIGURABLE = register("configurable", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.builder()
@@ -52,7 +54,7 @@ public class ModPistonFamilies {
             .base(PistonType.STICKY, ModBlocks.STALE_STICKY_PISTON)
             .head(ModBlocks.STALE_PISTON_HEAD)
             .moving(ModBlocks.STALE_MOVING_BLOCK)
-            .movingBlockEntity(ca.fxco.pistonlib.base.ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
+            .movingBlockEntity(ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
 
     public static final PistonFamily VERY_QUASI = register("very_quasi", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.DEFAULT)
@@ -60,7 +62,7 @@ public class ModPistonFamilies {
             .base(PistonType.STICKY, ModBlocks.VERY_QUASI_STICKY_PISTON)
             .head(ModBlocks.VERY_QUASI_PISTON_HEAD)
             .moving(ModBlocks.VERY_QUASI_MOVING_BLOCK)
-            .movingBlockEntity(ca.fxco.pistonlib.base.ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
+            .movingBlockEntity(ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
 
     public static final PistonFamily STRONG = register("strong", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.builder()
@@ -89,15 +91,7 @@ public class ModPistonFamilies {
             .base(PistonType.STICKY, ModBlocks.FRONT_POWERED_STICKY_PISTON)
             .head(ModBlocks.FRONT_POWERED_PISTON_HEAD)
             .moving(ModBlocks.FRONT_POWERED_MOVING_BLOCK)
-            .movingBlockEntity(ca.fxco.pistonlib.base.ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
-
-    public static final PistonFamily SLIPPERY = register("slippery", PistonFamilyImpl.builder()
-            .behavior(PistonBehaviorImpl.DEFAULT)
-            .base(PistonType.DEFAULT, ModBlocks.SLIPPERY_PISTON)
-            .base(PistonType.STICKY, ModBlocks.SLIPPERY_STICKY_PISTON)
-            .head(ModBlocks.SLIPPERY_PISTON_HEAD)
-            .moving(ModBlocks.SLIPPERY_MOVING_BLOCK)
-            .movingBlockEntity(ca.fxco.pistonlib.base.ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
+            .movingBlockEntity(ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
 
     public static final PistonFamily SUPER = register("super", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.builder()
@@ -107,7 +101,7 @@ public class ModPistonFamilies {
             .base(PistonType.STICKY, ModBlocks.SUPER_STICKY_PISTON)
             .head(ModBlocks.SUPER_PISTON_HEAD)
             .moving(ModBlocks.SUPER_MOVING_BLOCK)
-            .movingBlockEntity(ca.fxco.pistonlib.base.ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
+            .movingBlockEntity(ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
 
     public static final PistonFamily MBE = register("mbe", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.DEFAULT)
@@ -123,7 +117,7 @@ public class ModPistonFamilies {
             .base(PistonType.STICKY, ModBlocks.VERY_STICKY_PISTON)
             .head(ModBlocks.STICKY_PISTON_HEAD)
             .moving(ModBlocks.STICKY_MOVING_BLOCK)
-            .movingBlockEntity(ca.fxco.pistonlib.base.ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
+            .movingBlockEntity(ModBlockEntities.BASIC_MOVING_BLOCK_ENTITY, BasicMovingBlockEntity::new));
 
     private static PistonFamily register(String name, PistonFamily.Builder familyBuilder) {
         return register(name, familyBuilder.build());
@@ -133,5 +127,5 @@ public class ModPistonFamilies {
         return PistonFamilies.register(id(name), family);
     }
 
-    public static void bootstrap() { }
+    public static void bootstrap() {}
 }

@@ -1,6 +1,6 @@
 package ca.fxco.morepistons.blocks.autoCraftingBlock;
 
-import ca.fxco.pistonlib.PistonLibConfig;
+import ca.fxco.morepistons.MorePistonsConfig;
 import ca.fxco.pistonlib.api.pistonLogic.base.PLMergeBlockEntity;
 import ca.fxco.morepistons.base.ModBlockEntities;
 import ca.fxco.pistonlib.blocks.mergeBlock.MergeBlockEntity;
@@ -75,7 +75,7 @@ public class AutoCraftingBlockEntity extends BaseContainerBlockEntity implements
 
     @Override
     public boolean pl$canUnMerge(BlockState state, BlockState neighborState, Direction dir) {
-        if (PistonLibConfig.extractBlocksFromAutoCrafting) {
+        if (MorePistonsConfig.extractBlocksFromAutoCrafting) {
             for (int i = 0; i < this.items.getContainerSize(); i++) {
                 ItemStack stack = this.items.getItem(i);
                 if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
@@ -88,7 +88,7 @@ public class AutoCraftingBlockEntity extends BaseContainerBlockEntity implements
 
     @Override
     public @Nullable Pair<BlockState, BlockState> pl$doUnMerge(BlockState state, Direction dir) {
-        if (PistonLibConfig.extractBlocksFromAutoCrafting) {
+        if (MorePistonsConfig.extractBlocksFromAutoCrafting) {
             for (int slot : EXTRACTION_SLOTS) {
                 ItemStack stack = getItem(slot);
                 if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {

@@ -1,7 +1,11 @@
 package ca.fxco.morepistons;
 
 import ca.fxco.morepistons.base.*;
+import ca.fxco.pistonlib.PistonLibConfig;
 import ca.fxco.pistonlib.api.PistonLibInitializer;
+import ca.fxco.pistonlib.api.config.ConfigManager;
+import ca.fxco.pistonlib.config.ConfigManagerImpl;
+import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -14,6 +18,9 @@ public class MorePistons implements ModInitializer, PistonLibInitializer {
     public static final String MOD_ID = "morepistons";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+    @Getter
+    private static final ConfigManager configManager = new ConfigManagerImpl(MOD_ID, MorePistonsConfig.class);
+
     @Override
     public void onInitialize() {}
 
@@ -21,7 +28,9 @@ public class MorePistons implements ModInitializer, PistonLibInitializer {
     public void initialize() {}
 
     @Override
-    public void registerPistonFamilies() {}
+    public void registerPistonFamilies() {
+        ModPistonFamilies.bootstrap();
+    }
 
     @Override
     public void registerStickyGroups() {
@@ -32,9 +41,9 @@ public class MorePistons implements ModInitializer, PistonLibInitializer {
     public void bootstrap() {
         ModBlocks.bootstrap();
         ModBlockEntities.bootstrap();
+        ModDataComponents.bootstrap();
         ModItems.bootstrap();
-        ModItems.bootstrap();
-        ModPistonFamilies.bootstrap();
+        ModMenus.bootstrap();
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             ModCreativeModeTabs.bootstrap();
             ModScreens.bootstrap();

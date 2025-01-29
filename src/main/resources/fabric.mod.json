@@ -13,6 +13,10 @@
   "license": "MIT",
   "icon": "assets/morepistons/icon.png",
   "environment": "*",
+  "accessWidener" : "morepistons.accesswidener",
+  "mixins": [
+    "morepistons.mixins.json"
+  ],
   "entrypoints": {
     "client": [
       "ca.fxco.morepistons.client.MorePistonsClient"
@@ -25,6 +29,9 @@
     ],
     "pistonlib": [
       "ca.fxco.morepistons.MorePistons"
+    ],
+    "pistonlib-configmanager": [
+      "ca.fxco.morepistons.MorePistons::getConfigManager"
     ]
   },
   "depends": {

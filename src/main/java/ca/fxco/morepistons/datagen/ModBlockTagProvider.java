@@ -2,10 +2,10 @@ package ca.fxco.morepistons.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
+import ca.fxco.morepistons.MorePistons;
 import ca.fxco.pistonlib.api.PistonLibRegistries;
 import org.slf4j.Logger;
 
-import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.morepistons.base.ModBlocks;
 import ca.fxco.pistonlib.base.ModTags;
 
@@ -13,12 +13,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Blocks;
 
 public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
-    public static final Logger LOGGER = PistonLib.LOGGER;
+    public static final Logger LOGGER = MorePistons.LOGGER;
 
 	public ModBlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
@@ -36,9 +34,6 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		    movingPistonsTag.add(family.getMoving());
 		});
 
-		getOrCreateTagBuilder(ModTags.SLIPPERY_BLOCKS).add(ModBlocks.SLIPPERY_SLIME_BLOCK, ModBlocks.SLIPPERY_REDSTONE_BLOCK, ModBlocks.SLIPPERY_STONE_BLOCK, ModBlocks.SLIPPERY_PISTON_HEAD, ModBlocks.SLIPPERY_MOVING_BLOCK);
-		getOrCreateTagBuilder(ModTags.SLIPPERY_IGNORE_BLOCKS).add(Blocks.OBSERVER, Blocks.REDSTONE_BLOCK).addTag(ModTags.PISTONS).addTag(ModTags.MOVING_PISTONS);
-		getOrCreateTagBuilder(ModTags.SLIPPERY_TRANSPARENT_BLOCKS).add(ModBlocks.SLIPPERY_PISTON, ModBlocks.SLIPPERY_STICKY_PISTON);
 		getOrCreateTagBuilder(ModTags.UNPUSHABLE).add(ModBlocks.OBSIDIAN_SLAB_BLOCK, ModBlocks.OBSIDIAN_STAIR_BLOCK);
 
 		LOGGER.info("Finished generating block tags!");
