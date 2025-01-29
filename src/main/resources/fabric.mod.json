@@ -29,9 +29,6 @@
     ],
     "pistonlib": [
       "ca.fxco.morepistons.MorePistons"
-    ],
-    "pistonlib-configmanager": [
-      "ca.fxco.morepistons.MorePistons::getConfigManager"
     ]
   },
   "depends": {

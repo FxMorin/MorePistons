@@ -1,11 +1,8 @@
 package ca.fxco.morepistons;
 
 import ca.fxco.morepistons.base.*;
-import ca.fxco.pistonlib.PistonLibConfig;
+import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.PistonLibInitializer;
-import ca.fxco.pistonlib.api.config.ConfigManager;
-import ca.fxco.pistonlib.config.ConfigManagerImpl;
-import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,14 +15,13 @@ public class MorePistons implements ModInitializer, PistonLibInitializer {
     public static final String MOD_ID = "morepistons";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    @Getter
-    private static final ConfigManager configManager = new ConfigManagerImpl(MOD_ID, MorePistonsConfig.class);
-
     @Override
     public void onInitialize() {}
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        PistonLib.getConfigManager().loadConfigFields(MorePistonsConfig.class.getFields());
+    }
 
     @Override
     public void registerPistonFamilies() {
