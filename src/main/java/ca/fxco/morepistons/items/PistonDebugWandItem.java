@@ -1,5 +1,6 @@
 package ca.fxco.morepistons.items;
 
+import ca.fxco.pistonlib.api.block.PLPistonController;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonBaseBlock;
 import ca.fxco.pistonlib.pistonLogic.structureResolvers.DebugStructureResolver;
 import net.minecraft.ChatFormatting;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,7 @@ public class PistonDebugWandItem extends PistonWandItem {
             output.add(Component.literal("PushDirection: ").withStyle(ChatFormatting.BOLD)
                     .append(Component.literal(face.getOpposite().toString()).withStyle(ChatFormatting.RESET)));
             DebugStructureResolver resolver = new DebugStructureResolver(
-                    ((BasicPistonBaseBlock) ((BlockItem) wandItem.getItem()).getBlock()).pl$getPistonController(),
+                    ((Block & PLPistonController) ((BlockItem) wandItem.getItem()).getBlock()).pl$getPistonController(),
                     level,
                     blockPos.relative(face),
                     face.getOpposite(),

@@ -2,7 +2,7 @@ package ca.fxco.morepistons.items;
 
 import ca.fxco.morepistons.base.ModDataComponents;
 import ca.fxco.morepistons.items.tooltip.SingleItemTooltip;
-import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonBaseBlock;
+import ca.fxco.pistonlib.api.block.PLPistonController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.math.Fraction;
 
@@ -55,7 +56,7 @@ public class PistonWandItem extends Item {
             if (wandItem != ItemStack.EMPTY) {
                 BlockPos blockPos = useOnContext.getClickedPos();
                 Direction face = useOnContext.getClickedFace();
-                serverLevel.pl$addPistonEvent(((BasicPistonBaseBlock) ((BlockItem) wandItem.getItem()).getBlock()), blockPos.relative(face), face.getOpposite(), true);
+                serverLevel.pl$addPistonEvent(((Block & PLPistonController) ((BlockItem) wandItem.getItem()).getBlock()), blockPos.relative(face), face.getOpposite(), true);
             } else {
                 ((ServerPlayer) player).sendSystemMessage(Component.literal("Piston Wand does not currently have a piston!"), true); // todo: translations
             }
@@ -105,7 +106,7 @@ public class PistonWandItem extends Item {
         return !addingItem.isEmpty() &&
                 addingItem.getItem().canFitInsideContainerItems() &&
                 addingItem.getItem() instanceof BlockItem blockItem &&
-                blockItem.getBlock() instanceof BasicPistonBaseBlock;
+                blockItem.getBlock() instanceof PLPistonController;
     }
 
     private static void add(ItemStack itemStack, ItemStack addingItem) {
@@ -128,7 +129,7 @@ public class PistonWandItem extends Item {
         if (stack.isEmpty()) {
             return ItemStack.EMPTY;
         }
-        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof BasicPistonBaseBlock) {
+        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PLPistonController) {
             return stack;
         }
         return ItemStack.EMPTY;
