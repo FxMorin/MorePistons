@@ -85,7 +85,7 @@ public class AutoCraftingBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void pl$onPushEntityInto(Level level, BlockPos pos, BlockState state, Entity entity) {
+    public void pl$onPushEntityInto(BlockGetter level, BlockPos pos, BlockState state, Entity entity) {
         if (entity instanceof ItemEntity itemEntity) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof AutoCraftingBlockEntity autoCraftingBlockEntity) {
@@ -134,12 +134,12 @@ public class AutoCraftingBlock extends BaseEntityBlock {
     }
 
     @Override
-    public boolean pl$canPistonPush(Level level, BlockPos pos, BlockState state, Direction dir) {
+    public boolean pl$canPistonPush(BlockGetter level, BlockPos pos, BlockState state, Direction dir) {
         return MorePistonsConfig.movableAutoCraftingBlock;
     }
 
     @Override
-    public boolean pl$canPistonPull(Level level, BlockPos pos, BlockState state, Direction dir) {
+    public boolean pl$canPistonPull(BlockGetter level, BlockPos pos, BlockState state, Direction dir) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         return blockEntity.pl$canUnMerge(state, null, dir);
     }
