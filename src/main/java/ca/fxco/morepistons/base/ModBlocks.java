@@ -83,24 +83,24 @@ public class ModBlocks {
     // Configurable Piston - Testing only
     // The one and only configurable piston. It can do mostly everything that the other pistons can do, allowing you
     // to very easily enable and disable features in your pistons
-    public static final BasicPistonBaseBlock CONFIGURABLE_PISTON = registerPiston("configurable_piston", properties -> new ConfigurablePistonBaseBlock(new ConfigurablePistonController(PistonType.DEFAULT), properties));
-    public static final BasicPistonBaseBlock CONFIGURABLE_STICKY_PISTON = registerPiston("configurable_sticky_piston", properties -> new ConfigurablePistonBaseBlock(new ConfigurablePistonController(PistonType.STICKY), properties));
+    public static final BasicPistonBaseBlock CONFIGURABLE_PISTON = registerPiston("configurable_piston", properties -> new ConfigurablePistonBaseBlock(new VanillaPistonController(PistonType.DEFAULT), properties));
+    public static final BasicPistonBaseBlock CONFIGURABLE_STICKY_PISTON = registerPiston("configurable_sticky_piston", properties -> new ConfigurablePistonBaseBlock(new VanillaPistonController(PistonType.STICKY), properties));
     public static final BasicPistonArmBlock CONFIGURABLE_PISTON_ARM = registerPistonHead("configurable_piston_arm", BasicPistonArmBlock::new);
     public static final BasicPistonHeadBlock CONFIGURABLE_PISTON_HEAD = registerPistonHead("configurable_piston_head", ConfigurablePistonHeadBlock::new);
     public static final ConfigurableMovingBlock CONFIGURABLE_MOVING_BLOCK = registerMovingBlock("configurable_moving_block", ConfigurableMovingBlock::new);
 
     // Basic Long Piston
     // Can extend further than 1 block
-    public static final BasicPistonBaseBlock LONG_PISTON = registerPiston("long_piston", properties -> new BasicPistonBaseBlock(new LongPistonController(PistonType.DEFAULT), properties));
-    public static final BasicPistonBaseBlock LONG_STICKY_PISTON = registerPiston("long_sticky_piston", properties -> new BasicPistonBaseBlock(new LongPistonController(PistonType.STICKY), properties));
+    public static final BasicPistonBaseBlock LONG_PISTON = registerPiston("long_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.DEFAULT), properties));
+    public static final BasicPistonBaseBlock LONG_STICKY_PISTON = registerPiston("long_sticky_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.STICKY), properties));
     public static final BasicPistonArmBlock LONG_PISTON_ARM = registerPistonHead("long_piston_arm", BasicPistonArmBlock::new);
     public static final LongPistonHeadBlock LONG_PISTON_HEAD = registerPistonHead("long_piston_head", LongPistonHeadBlock::new);
     public static final BasicMovingBlock LONG_MOVING_BLOCK = registerMovingBlock("long_moving_block", BasicMovingBlock::new);
 
     // Stale Piston
     // A vanilla piston except it cannot be quasi-powered
-    public static final BasicPistonBaseBlock STALE_PISTON = registerPiston("stale_piston", properties -> new BasicPistonBaseBlock(new StalePistonController(PistonType.DEFAULT), properties));
-    public static final BasicPistonBaseBlock STALE_STICKY_PISTON = registerPiston("stale_sticky_piston", properties -> new BasicPistonBaseBlock(new StalePistonController(PistonType.STICKY), properties));
+    public static final BasicPistonBaseBlock STALE_PISTON = registerPiston("stale_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.DEFAULT), properties));
+    public static final BasicPistonBaseBlock STALE_STICKY_PISTON = registerPiston("stale_sticky_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.STICKY), properties));
     public static final BasicPistonHeadBlock STALE_PISTON_HEAD = registerPistonHead("stale_piston_head", BasicPistonHeadBlock::new);
     public static final BasicMovingBlock STALE_MOVING_BLOCK = registerMovingBlock("stale_moving_block", BasicMovingBlock::new);
 
@@ -134,8 +134,8 @@ public class ModBlocks {
 
     // Front Powered Piston
     // Normal piston but can be powered through the front
-    public static final BasicPistonBaseBlock FRONT_POWERED_PISTON = registerPiston("front_powered_piston", properties -> new BasicPistonBaseBlock(new FrontPoweredPistonController(PistonType.DEFAULT), properties));
-    public static final BasicPistonBaseBlock FRONT_POWERED_STICKY_PISTON = registerPiston("front_powered_sticky_piston", properties -> new BasicPistonBaseBlock(new FrontPoweredPistonController(PistonType.STICKY), properties));
+    public static final BasicPistonBaseBlock FRONT_POWERED_PISTON = registerPiston("front_powered_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.DEFAULT), properties));
+    public static final BasicPistonBaseBlock FRONT_POWERED_STICKY_PISTON = registerPiston("front_powered_sticky_piston", properties -> new BasicPistonBaseBlock(new VanillaPistonController(PistonType.STICKY), properties));
     public static final BasicPistonHeadBlock FRONT_POWERED_PISTON_HEAD = registerPistonHead("front_powered_piston_head", BasicPistonHeadBlock::new);
     public static final BasicMovingBlock FRONT_POWERED_MOVING_BLOCK = registerMovingBlock("front_powered_moving_block", BasicMovingBlock::new);
 
