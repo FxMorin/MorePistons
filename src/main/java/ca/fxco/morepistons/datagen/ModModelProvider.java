@@ -4,6 +4,7 @@ import ca.fxco.morepistons.MorePistons;
 import ca.fxco.morepistons.base.ModBlocks;
 import ca.fxco.morepistons.base.ModItems;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonBaseBlock;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
 import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.PistonLibRegistries;
 import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamily;
@@ -14,7 +15,6 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -107,38 +107,72 @@ public class ModModelProvider extends FabricModelProvider {
 
 		generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.STICKY_CHAIN_BLOCK, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.STICKY_CHAIN_BLOCK))).with(BlockModelGenerators.createRotatedPillar()));
 
+		ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON);
 		MultiPartGenerator multiPartGenerator =
 				MultiPartGenerator.multiPart(ModBlocks.SLAB_PISTON)
 						.with(Variant.variant()
 								.with(VariantProperties.MODEL, PistonLib.id("block/template_empty")));
-		generator.blockStateOutput.accept(
-				createForAllFaces(
-						createForAllFaces(multiPartGenerator,
-								Condition.condition().term(
-										BlockStateProperties.SLAB_TYPE, SlabType.BOTTOM, SlabType.DOUBLE
-								),
-								false, ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON),
-								SlabPistonBaseBlock.FACING),
-						Condition.condition().term(
-								BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE
-						),
-						false,
-						ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON).withSuffix("_top"),
-						SlabPistonBaseBlock.FACING_TOP)
+		createForAllHorizontalFaces(multiPartGenerator,
+				modelLocation,
+				SlabPistonBaseBlock.FACING,
+				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.BOTTOM, SlabType.DOUBLE),
+				Condition.condition().term(BlockStateProperties.EXTENDED, false)
 		);
+		createForAllHorizontalFaces(
+				multiPartGenerator,
+				modelLocation.withSuffix("_top"),
+				SlabPistonBaseBlock.FACING_TOP,
+				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
+				Condition.condition().term(BlockStateProperties.EXTENDED, false)
+		);
+		createForAllHorizontalFaces(multiPartGenerator,
+				modelLocation.withSuffix("_extended"),
+				SlabPistonBaseBlock.FACING,
+				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.BOTTOM, SlabType.DOUBLE),
+				Condition.condition().term(BlockStateProperties.EXTENDED, true)
+		);
+		createForAllHorizontalFaces(
+				multiPartGenerator,
+				modelLocation.withSuffix("_extended_top"),
+				SlabPistonBaseBlock.FACING_TOP,
+				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
+				Condition.condition().term(BlockStateProperties.EXTENDED, true)
+		);
+		generator.blockStateOutput.accept(multiPartGenerator);
+
+		modelLocation = ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON_HEAD_BLOCK);
+		multiPartGenerator =
+				MultiPartGenerator.multiPart(ModBlocks.SLAB_PISTON_HEAD_BLOCK)
+						.with(Variant.variant()
+								.with(VariantProperties.MODEL, PistonLib.id("block/template_empty")));
+		createForAllHorizontalFaces(
+				multiPartGenerator,
+				modelLocation,
+				BlockStateProperties.FACING,
+				Condition.condition().term(SlabPistonHeadBlock.SLAB_TYPE, SlabType.BOTTOM, SlabType.DOUBLE)
+		);
+		createForAllHorizontalFaces(
+				multiPartGenerator,
+				modelLocation.withSuffix("_top"),
+				BlockStateProperties.FACING,
+				Condition.condition().term(SlabPistonHeadBlock.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE)
+		);
+		generator.blockStateOutput.accept(multiPartGenerator);
 
 		LOGGER.info("Finished generating blockstate definitions and models!");
 	}
 
-	public static MultiPartGenerator createForAllFaces(MultiPartGenerator generator,
-													   Condition.TerminalCondition condition,
-													   boolean extended, ResourceLocation resourceLocation,
-													   EnumProperty<Direction> property) {
-		return generator.with(
+	public static void createForAllHorizontalFaces(MultiPartGenerator generator,
+												   ResourceLocation resourceLocation, Condition... condition) {
+		createForAllHorizontalFaces(generator, resourceLocation, BlockStateProperties.HORIZONTAL_FACING, condition);
+	}
+
+	public static void createForAllHorizontalFaces(MultiPartGenerator generator, ResourceLocation resourceLocation,
+												   EnumProperty<Direction> property, Condition... condition) {
+		generator.with(
 						Condition.and(
 								Condition.condition().term(property, Direction.NORTH),
-								condition,
-								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+								Condition.and(condition)
 						),
 						Variant.variant()
 								.with(VariantProperties.MODEL, resourceLocation)
@@ -146,8 +180,7 @@ public class ModModelProvider extends FabricModelProvider {
 				.with(
 						Condition.and(
 								Condition.condition().term(property, Direction.EAST),
-								condition,
-								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+								Condition.and(condition)
 						),
 						Variant.variant()
 								.with(VariantProperties.MODEL, resourceLocation)
@@ -156,8 +189,7 @@ public class ModModelProvider extends FabricModelProvider {
 				.with(
 						Condition.and(
 								Condition.condition().term(property, Direction.SOUTH),
-								condition,
-								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+								Condition.and(condition)
 						),
 						Variant.variant()
 								.with(VariantProperties.MODEL, resourceLocation)
@@ -166,8 +198,7 @@ public class ModModelProvider extends FabricModelProvider {
 				.with(
 						Condition.and(
 								Condition.condition().term(property, Direction.WEST),
-								condition,
-								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+								Condition.and(condition)
 						),
 						Variant.variant()
 								.with(VariantProperties.MODEL, resourceLocation)
