@@ -111,6 +111,14 @@ public class ModPistonFamilies {
             .moving(ModBlocks.MBE_MOVING_BLOCK)
             .movingBlockEntity(ModBlockEntities.MBE_MOVING_BLOCK_ENTITY, MBEMovingBlockEntity::new));
 
+    public static final PistonFamily SLAB = register("slab", PistonFamilyImpl.builder()
+            .behavior(PistonBehaviorImpl.DEFAULT)
+            .base(PistonType.DEFAULT, ModBlocks.SLAB_PISTON)
+            .base(PistonType.STICKY, ModBlocks.SLAB_STICKY_PISTON)
+            .head(ModBlocks.SLAB_PISTON_HEAD_BLOCK)
+            .moving(ModBlocks.SLAB_MOVING_BLOCK)
+            .movingBlockEntity(ModBlockEntities.MBE_MOVING_BLOCK_ENTITY, MBEMovingBlockEntity::new));
+
     public static final PistonFamily VERY_STICKY = register("very_sticky", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.builder()
                     .verySticky())

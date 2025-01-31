@@ -1,7 +1,9 @@
 package ca.fxco.morepistons.datagen;
 
+import ca.fxco.morepistons.MorePistons;
 import ca.fxco.morepistons.base.ModBlocks;
 import ca.fxco.morepistons.base.ModItems;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonBaseBlock;
 import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.PistonLibRegistries;
 import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamily;
@@ -10,17 +12,17 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -32,9 +34,9 @@ import static net.minecraft.client.data.models.BlockModelGenerators.createSlab;
 
 public class ModModelProvider extends FabricModelProvider {
 
-    public static final Logger LOGGER = PistonLib.LOGGER;
+    public static final Logger LOGGER = MorePistons.LOGGER;
 
-	public static final ModelTemplate TEMPLATE_HALF_BLOCK = new ModelTemplate(Optional.of(PistonLib.id("block/template_half_block")), Optional.empty(), TextureSlot.TOP, TextureSlot.SIDE);
+	public static final ModelTemplate TEMPLATE_HALF_BLOCK = new ModelTemplate(Optional.of(MorePistons.id("block/template_half_block")), Optional.empty(), TextureSlot.TOP, TextureSlot.SIDE);
 
 	public ModModelProvider(FabricDataOutput dataOutput) {
 		super(dataOutput);
@@ -45,17 +47,21 @@ public class ModModelProvider extends FabricModelProvider {
 		LOGGER.info("Generating blockstate definitions and models...");
 
 		for (var entry : PistonLibRegistries.PISTON_FAMILY.entrySet()) {
-            ResourceKey<PistonFamily> key = entry.getKey();
-            PistonFamily family = entry.getValue();
+			ResourceKey<PistonFamily> key = entry.getKey();
+			PistonFamily family = entry.getValue();
 
 			if (family == ModPistonFamilies.VANILLA) {
 				continue;
 			}
 
-            LOGGER.info("Generating blockstate definitions and models for piston family " + key.location()+"...");
+			if (family == ca.fxco.morepistons.base.ModPistonFamilies.SLAB) {
+				continue;
+			}
 
-            registerPistonFamily(generator, family);
-        }
+			LOGGER.info("Generating blockstate definitions and models for piston family " + key.location() + "...");
+
+			registerPistonFamily(generator, family);
+		}
 
 		LOGGER.info("Finished generating blockstate definitions and models for pistons, generating for other blocks...");
 
@@ -72,10 +78,10 @@ public class ModModelProvider extends FabricModelProvider {
 		registerHalfBlockTextureMap(generator, ModBlocks.HALF_REDSTONE_LAMP_BLOCK, ModelLocationUtils.getModelLocation(Blocks.REDSTONE_LAMP, "_on"), "_on");
 
 		generator.createRotatedPillarWithHorizontalVariant(ModBlocks.AXIS_LOCKED_BLOCK, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT);
-        generator.createTrivialCube(ModBlocks.DRAG_BLOCK);
-        generator.createTrivialCube(ModBlocks.STICKYLESS_BLOCK);
-        generator.createTrivialCube(ModBlocks.GLUE_BLOCK);
-        generator.createTrivialCube(ModBlocks.MOVE_COUNTING_BLOCK);
+		generator.createTrivialCube(ModBlocks.DRAG_BLOCK);
+		generator.createTrivialCube(ModBlocks.STICKYLESS_BLOCK);
+		generator.createTrivialCube(ModBlocks.GLUE_BLOCK);
+		generator.createTrivialCube(ModBlocks.MOVE_COUNTING_BLOCK);
 		generator.createTrivialCube(ModBlocks.WEAK_REDSTONE_BLOCK);
 		generator.createTrivialCube(ModBlocks.AUTO_CRAFTING_BLOCK);
 		generator.createTrivialCube(ModBlocks.QUASI_BLOCK);
@@ -101,7 +107,72 @@ public class ModModelProvider extends FabricModelProvider {
 
 		generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.STICKY_CHAIN_BLOCK, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.STICKY_CHAIN_BLOCK))).with(BlockModelGenerators.createRotatedPillar()));
 
+		MultiPartGenerator multiPartGenerator =
+				MultiPartGenerator.multiPart(ModBlocks.SLAB_PISTON)
+						.with(Variant.variant()
+								.with(VariantProperties.MODEL, PistonLib.id("block/template_empty")));
+		generator.blockStateOutput.accept(
+				createForAllFaces(
+						createForAllFaces(multiPartGenerator,
+								Condition.condition().term(
+										BlockStateProperties.SLAB_TYPE, SlabType.BOTTOM, SlabType.DOUBLE
+								),
+								false, ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON),
+								SlabPistonBaseBlock.FACING),
+						Condition.condition().term(
+								BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE
+						),
+						false,
+						ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON).withSuffix("_top"),
+						SlabPistonBaseBlock.FACING_TOP)
+		);
+
 		LOGGER.info("Finished generating blockstate definitions and models!");
+	}
+
+	public static MultiPartGenerator createForAllFaces(MultiPartGenerator generator,
+													   Condition.TerminalCondition condition,
+													   boolean extended, ResourceLocation resourceLocation,
+													   EnumProperty<Direction> property) {
+		return generator.with(
+						Condition.and(
+								Condition.condition().term(property, Direction.NORTH),
+								condition,
+								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+						),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourceLocation)
+				)
+				.with(
+						Condition.and(
+								Condition.condition().term(property, Direction.EAST),
+								condition,
+								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+						),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourceLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+						Condition.and(
+								Condition.condition().term(property, Direction.SOUTH),
+								condition,
+								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+						),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourceLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				)
+				.with(
+						Condition.and(
+								Condition.condition().term(property, Direction.WEST),
+								condition,
+								Condition.condition().term(BlockStateProperties.EXTENDED, extended)
+						),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourceLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				);
 	}
 
 	@Override

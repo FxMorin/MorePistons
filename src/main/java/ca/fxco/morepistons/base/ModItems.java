@@ -76,6 +76,8 @@ public class ModItems {
     public static final BlockItem SUPER_STICKY_PISTON = registerBlock(ModBlocks.SUPER_STICKY_PISTON);
     public static final BlockItem MBE_PISTON = registerBlock(ModBlocks.MBE_PISTON);
     public static final BlockItem MBE_STICKY_PISTON = registerBlock(ModBlocks.MBE_STICKY_PISTON);
+    public static final BlockItem SLAB_PISTON = registerBlock(ModBlocks.SLAB_PISTON);
+    public static final BlockItem SLAB_STICKY_PISTON = registerBlock(ModBlocks.SLAB_STICKY_PISTON);
 
     //endregion
 

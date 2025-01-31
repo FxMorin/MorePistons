@@ -8,6 +8,8 @@ import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurableMovingB
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurablePistonBaseBlock;
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurablePistonHeadBlock;
 import ca.fxco.morepistons.blocks.pistons.longPiston.LongPistonHeadBlock;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonBaseBlock;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
 import ca.fxco.morepistons.blocks.pistons.veryStickyPiston.StickyPistonHeadBlock;
 import ca.fxco.morepistons.blocks.pistons.veryStickyPiston.VeryStickyPistonBaseBlock;
 import ca.fxco.morepistons.pistonLogic.controller.*;
@@ -150,8 +152,13 @@ public class ModBlocks {
     // A piston that can move block entities
     public static final BasicPistonBaseBlock MBE_PISTON = registerPiston("mbe_piston", createMBEPistonBlock(PistonType.DEFAULT));
     public static final BasicPistonBaseBlock MBE_STICKY_PISTON = registerPiston("mbe_sticky_piston", createMBEPistonBlock(PistonType.STICKY));
-    public static final BasicPistonHeadBlock MBE_PISTON_HEAD_BLOCK = register("mbe_piston_head", BasicPistonHeadBlock::new, Properties.ofFullCopy(Blocks.PISTON_HEAD));
+    public static final BasicPistonHeadBlock MBE_PISTON_HEAD_BLOCK = registerPistonHead("mbe_piston_head", BasicPistonHeadBlock::new);
     public static final MBEMovingBlock MBE_MOVING_BLOCK = registerMovingBlock("mbe_moving_block", MBEMovingBlock::new);
+
+    public static final BasicPistonBaseBlock SLAB_PISTON = registerPiston("slab_piston", properties -> new SlabPistonBaseBlock(new VanillaPistonController(PistonType.DEFAULT), properties));
+    public static final BasicPistonBaseBlock SLAB_STICKY_PISTON = registerPiston("slab_sticky_piston", properties -> new SlabPistonBaseBlock(new VanillaPistonController(PistonType.STICKY), properties));
+    public static final BasicPistonHeadBlock SLAB_PISTON_HEAD_BLOCK = registerPistonHead("slab_piston_head", SlabPistonHeadBlock::new);
+    public static final BasicMovingBlock SLAB_MOVING_BLOCK = registerMovingBlock("slab_moving_block", BasicMovingBlock::new);
 
     private static <T extends Block> T register(String name, Function<Properties, T> block, Block propertySource) {
         return register(name, block, Properties.ofFullCopy(propertySource));

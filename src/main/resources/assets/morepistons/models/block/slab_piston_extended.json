@@ -1,0 +1,24 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"side_small": "morepistons:block/slab_piston_side_small",
+		"particle": "block/piston_side",
+		"side": "block/piston_side",
+		"inside": "morepistons:block/slab_piston_inner",
+		"bottom": "morepistons:block/slab_piston_bottom"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 4],
+			"to": [16, 8, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#inside"},
+				"east": {"uv": [0, 4, 8, 16], "rotation": 90, "texture": "#side_small", "cullface": "east"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#bottom", "cullface": "south"},
+				"west": {"uv": [0, 4, 8, 16], "rotation": 270, "texture": "#side_small", "cullface": "west"},
+				"up": {"uv": [0, 4, 16, 16], "texture": "#side", "cullface": "up"},
+				"down": {"uv": [0, 4, 16, 16], "rotation": 180, "texture": "#side", "cullface": "down"}
+			}
+		}
+	]
+}

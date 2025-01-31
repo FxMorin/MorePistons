@@ -4,7 +4,7 @@
     "bottom": "block/smooth_stone",
     "side": "block/smooth_stone",
     "top": "block/smooth_stone",
-    "front": "pistonlib:block/strong_piston_top",
+    "front": "morepistons:block/strong_piston_top",
     "particle": "block/smooth_stone"
   },
   "elements": [

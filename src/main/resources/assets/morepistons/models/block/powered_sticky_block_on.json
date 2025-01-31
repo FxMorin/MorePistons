@@ -1,6 +1,6 @@
 {
-  "parent": "pistonlib:block/powered_sticky_block",
+  "parent": "morepistons:block/powered_sticky_block",
   "textures": {
-    "front": "pistonlib:block/strong_piston_top_sticky"
+    "front": "morepistons:block/strong_piston_top_sticky"
   }
 }

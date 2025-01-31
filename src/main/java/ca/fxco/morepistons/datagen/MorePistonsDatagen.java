@@ -12,7 +12,7 @@ public class MorePistonsDatagen implements DataGeneratorEntrypoint {
 
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
-		LOGGER.info("Starting PistonLib datagen...");
+		LOGGER.info("Starting MorePistons datagen...");
 
 		FabricDataGenerator.Pack pack = dataGenerator.createPack();
 

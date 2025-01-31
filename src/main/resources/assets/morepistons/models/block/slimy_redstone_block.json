@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "outer": "pistonlib:block/slimy_redstone_block",
-    "inner": "pistonlib:block/slimy_redstone_inner",
-    "particle": "pistonlib:block/slimy_redstone_block"
+    "outer": "morepistons:block/slimy_redstone_block",
+    "inner": "morepistons:block/slimy_redstone_inner",
+    "particle": "morepistons:block/slimy_redstone_block"
   },
   "elements": [
     {
