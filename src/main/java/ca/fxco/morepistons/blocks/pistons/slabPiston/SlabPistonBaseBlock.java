@@ -1,7 +1,9 @@
 package ca.fxco.morepistons.blocks.pistons.slabPiston;
 
+import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.pistonLogic.controller.PistonController;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonBaseBlock;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -15,7 +17,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -39,6 +40,10 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     private static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
     public static final EnumProperty<Direction> FACING_TOP = EnumProperty.create("facing_top", Direction.class, Direction.Plane.HORIZONTAL);
     public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
+    private static final Direction[] DIRECTIONS = {Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
+    protected static final VoxelShape[] BOTTOM_AABBS;
+    protected static final VoxelShape[] TOP_AABBS;
+    protected static final VoxelShape[][] DOUBLE_AABBS;
 
     public SlabPistonBaseBlock(PistonController controller, Properties properties) {
         super(controller, properties);
@@ -58,10 +63,22 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         SlabType slabType = blockState.getValue(TYPE);
+
+        if (!blockState.getValue(EXTENDED)) {
+            return switch (slabType) {
+                case DOUBLE -> Shapes.block();
+                case TOP -> TOP_AABB;
+                default -> BOTTOM_AABB;
+            };
+        }
+        Direction facing = blockState.getValue(FACING);
+        if (facing.ordinal() < 2)
+            return Shapes.empty();
+
         return switch (slabType) {
-            case DOUBLE -> Shapes.block();
-            case TOP -> TOP_AABB;
-            default -> BOTTOM_AABB;
+            case DOUBLE -> DOUBLE_AABBS[facing.ordinal() - 2][blockState.getValue(FACING_TOP).ordinal() - 2];
+            case TOP -> TOP_AABBS[blockState.getValue(FACING_TOP).ordinal() - 2];
+            default -> BOTTOM_AABBS[facing.ordinal() - 2];
         };
     }
 
@@ -150,5 +167,40 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
             case WATER -> blockState.getFluidState().is(FluidTags.WATER);
             case AIR -> false;
         };
+    }
+
+    static {
+        BOTTOM_AABBS = new VoxelShape[4];
+        TOP_AABBS = new VoxelShape[4];
+        DOUBLE_AABBS = new VoxelShape[4][4];
+
+        for (Direction direction : DIRECTIONS) {
+            float stepX = direction.getStepX() * 4;
+            float stepZ = direction.getStepZ() * 4;
+            BOTTOM_AABBS[direction.ordinal() - 2] = Block.box(
+                    (-stepX < 0 ? 0 : -stepX),
+                    0,
+                    (-stepZ < 0 ? 0 : -stepZ),
+                    16 + (-stepX > 0 ? 0 : -stepX),
+                    8F,
+                    16 + (-stepZ > 0 ? 0 : -stepZ));
+        }
+        for (Direction direction : DIRECTIONS) {
+            float stepX = direction.getStepX() * 4;
+            float stepZ = direction.getStepZ() * 4;
+            TOP_AABBS[direction.ordinal() - 2] = Block.box(
+                    (-stepX < 0 ? 0 : -stepX),
+                    8f,
+                    (-stepZ < 0 ? 0 : -stepZ),
+                    16 + (-stepX > 0 ? 0 : -stepX),
+                    16F,
+                    16 + (-stepZ > 0 ? 0 : -stepZ));
+        }
+        for (Direction direction : DIRECTIONS) {
+            for (Direction direction2 : DIRECTIONS) {
+                DOUBLE_AABBS[direction.ordinal() - 2][direction2.ordinal() - 2] =
+                        Shapes.or(BOTTOM_AABBS[direction.ordinal() - 2], TOP_AABBS[direction2.ordinal() - 2]);
+            }
+        }
     }
 }

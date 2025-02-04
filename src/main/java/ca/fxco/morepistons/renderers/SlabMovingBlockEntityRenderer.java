@@ -117,7 +117,7 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
                     facing = state.getValue(SlabPistonBaseBlock.FACING_TOP);
                 }
                 default -> {
-                    armType = SlabType.TOP;
+                    armType = SlabType.BOTTOM;
                     facing = state.getValue(SlabPistonBaseBlock.FACING);
                 }
             }
