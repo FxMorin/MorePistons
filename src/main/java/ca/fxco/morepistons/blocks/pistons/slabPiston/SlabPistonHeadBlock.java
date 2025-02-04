@@ -4,6 +4,7 @@ import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonHeadBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
 
@@ -17,5 +18,13 @@ public class SlabPistonHeadBlock extends BasicPistonHeadBlock {
     @Override
     public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, TYPE, SHORT, SLAB_TYPE);
+    }
+
+    @Override
+    public boolean isFittingBase(BlockState headState, BlockState behindState) {
+        return behindState.is(this.getFamily().getBase(headState.getValue(TYPE))) &&
+                behindState.getValue(BlockStateProperties.EXTENDED) &&
+                behindState.getValue(headState.getValue(SLAB_TYPE) == SlabType.TOP ?
+                        SlabPistonBaseBlock.FACING_TOP : FACING) == headState.getValue(FACING);
     }
 }

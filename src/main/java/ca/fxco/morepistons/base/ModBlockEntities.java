@@ -3,6 +3,7 @@ package ca.fxco.morepistons.base;
 import ca.fxco.morepistons.blocks.autoCraftingBlock.AutoCraftingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurableMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.fastPiston.FastMovingBlockEntity;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.speedPiston.SpeedMovingBlockEntity;
 
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicMovingBlockEntity;
@@ -24,6 +25,7 @@ public class ModBlockEntities {
     public static final BlockEntityType<SpeedMovingBlockEntity> SPEED_MOVING_BLOCK_ENTITY;
     public static final BlockEntityType<FastMovingBlockEntity> FAST_MOVING_BLOCK_ENTITY;
     public static final BlockEntityType<MBEMovingBlockEntity> MBE_MOVING_BLOCK_ENTITY;
+    public static final BlockEntityType<SlabMovingBlockEntity> SLAB_MOVING_BLOCK_ENTITY;
 
     // Other
     public static final BlockEntityType<AutoCraftingBlockEntity> AUTO_CRAFTING_BLOCK_ENTITY;
@@ -49,6 +51,10 @@ public class ModBlockEntities {
         MBE_MOVING_BLOCK_ENTITY = register(
                 "mbe",
                 MBEMovingBlockEntity::new
+        );
+        SLAB_MOVING_BLOCK_ENTITY = register(
+                "slab",
+                SlabMovingBlockEntity::new
         );
 
         // Other

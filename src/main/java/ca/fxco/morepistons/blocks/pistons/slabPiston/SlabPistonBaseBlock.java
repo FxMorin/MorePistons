@@ -31,7 +31,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import static net.minecraft.world.level.block.SlabBlock.TYPE;
 import static net.minecraft.world.level.block.SlabBlock.WATERLOGGED;
 
 public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleWaterloggedBlock {
@@ -39,6 +38,7 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     protected static final VoxelShape TOP_AABB = Block.box(0.0, 8.0, 0.0, 16.0, 16.0, 16.0);
     private static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
     public static final EnumProperty<Direction> FACING_TOP = EnumProperty.create("facing_top", Direction.class, Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
 
     public SlabPistonBaseBlock(PistonController controller, Properties properties) {
         super(controller, properties);

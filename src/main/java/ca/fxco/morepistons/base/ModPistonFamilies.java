@@ -2,6 +2,7 @@ package ca.fxco.morepistons.base;
 
 import ca.fxco.morepistons.blocks.pistons.configurablePiston.ConfigurableMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.fastPiston.FastMovingBlockEntity;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.speedPiston.SpeedMovingBlockEntity;
 import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamilies;
 import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamily;
@@ -117,7 +118,7 @@ public class ModPistonFamilies {
             .base(PistonType.STICKY, ModBlocks.SLAB_STICKY_PISTON)
             .head(ModBlocks.SLAB_PISTON_HEAD_BLOCK)
             .moving(ModBlocks.SLAB_MOVING_BLOCK)
-            .movingBlockEntity(ModBlockEntities.MBE_MOVING_BLOCK_ENTITY, MBEMovingBlockEntity::new));
+            .movingBlockEntity(ModBlockEntities.SLAB_MOVING_BLOCK_ENTITY, SlabMovingBlockEntity::new));
 
     public static final PistonFamily VERY_STICKY = register("very_sticky", PistonFamilyImpl.builder()
             .behavior(PistonBehaviorImpl.builder()

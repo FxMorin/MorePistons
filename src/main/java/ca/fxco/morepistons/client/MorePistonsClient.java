@@ -2,6 +2,7 @@ package ca.fxco.morepistons.client;
 
 import ca.fxco.morepistons.base.ModBlockEntities;
 import ca.fxco.morepistons.base.ModBlocks;
+import ca.fxco.morepistons.renderers.SlabMovingBlockEntityRenderer;
 import ca.fxco.pistonlib.renderers.BasicMovingBlockEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -18,6 +19,7 @@ public class MorePistonsClient implements ClientModInitializer {
         BlockEntityRenderers.register(ModBlockEntities.SPEED_MOVING_BLOCK_ENTITY, BasicMovingBlockEntityRenderer::new);
         BlockEntityRenderers.register(ModBlockEntities.FAST_MOVING_BLOCK_ENTITY, BasicMovingBlockEntityRenderer::new);
         BlockEntityRenderers.register(ModBlockEntities.MBE_MOVING_BLOCK_ENTITY, BasicMovingBlockEntityRenderer::new);
+        BlockEntityRenderers.register(ModBlockEntities.SLAB_MOVING_BLOCK_ENTITY, SlabMovingBlockEntityRenderer::new);
 
         // Registering Block Render Layers
         BlockRenderLayerMap renderLayers = BlockRenderLayerMap.INSTANCE;
