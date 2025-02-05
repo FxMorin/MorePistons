@@ -3,7 +3,7 @@
 	"textures": {
 		"side": "block/piston_side",
 		"side_small": "morepistons:block/slab_piston_side_small",
-		"platform": "morepistons:block/slab_piston_top",
+		"platform": "morepistons:block/sticky_slab_piston_top",
 		"bottom": "morepistons:block/slab_piston_bottom",
 		"particle": "#side"
 	},

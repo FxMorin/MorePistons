@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"side_small": "morepistons:block/slab_piston_side_small",
-		"particle": "block/piston_side",
+		"particle": "#side",
 		"side": "block/piston_side",
 		"inside": "morepistons:block/slab_piston_inner",
 		"bottom": "morepistons:block/slab_piston_bottom"

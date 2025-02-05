@@ -1,9 +1,7 @@
 package ca.fxco.morepistons.blocks.pistons.slabPiston;
 
-import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.pistonLogic.controller.PistonController;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonBaseBlock;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -100,13 +98,16 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
 
         } else {
             FluidState fluidState = ctx.getLevel().getFluidState(blockPos);
+            Direction facing = ctx.getHorizontalDirection().getOpposite();
             BlockState blockState2 = this.defaultBlockState()
                     .setValue(TYPE, SlabType.BOTTOM)
-                    .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+                    .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER)
+                    .setValue(FACING, facing)
+                    .setValue(FACING_TOP, facing);
             Direction direction = ctx.getClickedFace();
-            return direction != Direction.DOWN && (direction == Direction.UP || !(ctx.getClickLocation().y - (double)blockPos.getY() > 0.5))
-                    ? blockState2.setValue(FACING, ctx.getHorizontalDirection().getOpposite())
-                    : blockState2.setValue(TYPE, SlabType.TOP).setValue(FACING_TOP, ctx.getHorizontalDirection().getOpposite());
+            return direction != Direction.DOWN && (direction == Direction.UP ||
+                    !(ctx.getClickLocation().y - (double)blockPos.getY() > 0.5)) ?
+                    blockState2 : blockState2.setValue(TYPE, SlabType.TOP);
         }
     }
 
@@ -163,9 +164,8 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     @Override
     public boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return switch (pathComputationType) {
-            case LAND -> false;
+            case LAND, AIR -> false;
             case WATER -> blockState.getFluidState().is(FluidTags.WATER);
-            case AIR -> false;
         };
     }
 
