@@ -80,11 +80,6 @@ public class AllSidedObserverBlock extends Block {
     }
 
     @Override
-    public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction dir) {
-        return state.getSignal(level, pos, dir);
-    }
-
-    @Override
     public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction dir) {
         return state.getValue(POWERED) ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
     }
