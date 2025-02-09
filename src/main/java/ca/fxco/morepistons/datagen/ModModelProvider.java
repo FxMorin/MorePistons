@@ -161,7 +161,7 @@ public class ModModelProvider extends FabricModelProvider {
 				modelLocation.withSuffix("_extended_top"),
 				SlabPistonBaseBlock.FACING_TOP,
 				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
-				Condition.condition().term(BlockStateProperties.EXTENDED, true)
+				Condition.condition().term(SlabPistonBaseBlock.EXTENDED_TOP, true)
 		);
 		modelLocation = modelLocation.withPath(modelLocation.getPath().replace("slab", "sticky_slab"));
 		createForAllHorizontalFaces(multiPartGenerator,
@@ -174,7 +174,7 @@ public class ModModelProvider extends FabricModelProvider {
 				modelLocation.withSuffix("_top"),
 				SlabPistonBaseBlock.FACING_TOP,
 				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
-				Condition.condition().term(BlockStateProperties.EXTENDED, false)
+				Condition.condition().term(SlabPistonBaseBlock.EXTENDED_TOP, false)
 		);
 		generator.blockStateOutput.accept(multiPartGenerator);
 		generator.registerSimpleItemModel(ModBlocks.SLAB_STICKY_PISTON, modelLocation);
