@@ -130,7 +130,7 @@ public class ModModelProvider extends FabricModelProvider {
 				modelLocation.withSuffix("_top"),
 				SlabPistonBaseBlock.FACING_TOP,
 				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
-				Condition.condition().term(BlockStateProperties.EXTENDED, false)
+				Condition.condition().term(SlabPistonBaseBlock.EXTENDED_TOP, false)
 		);
 		createForAllHorizontalFaces(multiPartGenerator,
 				modelLocation.withSuffix("_extended"),
@@ -142,7 +142,7 @@ public class ModModelProvider extends FabricModelProvider {
 				modelLocation.withSuffix("_extended_top"),
 				SlabPistonBaseBlock.FACING_TOP,
 				Condition.condition().term(BlockStateProperties.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
-				Condition.condition().term(BlockStateProperties.EXTENDED, true)
+				Condition.condition().term(SlabPistonBaseBlock.EXTENDED_TOP, true)
 		);
 		generator.blockStateOutput.accept(multiPartGenerator);
 
@@ -180,30 +180,29 @@ public class ModModelProvider extends FabricModelProvider {
 		generator.registerSimpleItemModel(ModBlocks.SLAB_STICKY_PISTON, modelLocation);
 
 		modelLocation = ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON_HEAD_BLOCK);
-		multiPartGenerator =
-				MultiPartGenerator.multiPart(ModBlocks.SLAB_PISTON_HEAD_BLOCK)
-						.with(Variant.variant()
-								.with(VariantProperties.MODEL, pistonParticleModel));
-		createForAllHorizontalFaces(
+		multiPartGenerator = MultiPartGenerator.multiPart(ModBlocks.SLAB_PISTON_HEAD_BLOCK)
+				.with(Variant.variant().with(VariantProperties.MODEL, pistonParticleModel));
+
+		createHeadForAllHorizontalFaces(
 				multiPartGenerator,
 				modelLocation,
 				Condition.condition().term(SlabPistonHeadBlock.SLAB_TYPE, SlabType.BOTTOM, SlabType.DOUBLE),
 				Condition.condition().term(SlabPistonHeadBlock.TYPE, PistonType.DEFAULT)
 		);
-		createForAllHorizontalFaces(
+		createHeadForAllHorizontalFaces(
 				multiPartGenerator,
 				modelLocation.withSuffix("_top"),
 				Condition.condition().term(SlabPistonHeadBlock.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
 				Condition.condition().term(SlabPistonHeadBlock.TYPE, PistonType.DEFAULT)
 		);
 		modelLocation = modelLocation.withPath(modelLocation.getPath().replace("slab", "sticky_slab"));
-		createForAllHorizontalFaces(
+		createHeadForAllHorizontalFaces(
 				multiPartGenerator,
 				modelLocation,
 				Condition.condition().term(SlabPistonHeadBlock.SLAB_TYPE, SlabType.BOTTOM, SlabType.DOUBLE),
 				Condition.condition().term(SlabPistonHeadBlock.TYPE, PistonType.STICKY)
 		);
-		createForAllHorizontalFaces(
+		createHeadForAllHorizontalFaces(
 				multiPartGenerator,
 				modelLocation.withSuffix("_top"),
 				Condition.condition().term(SlabPistonHeadBlock.SLAB_TYPE, SlabType.TOP, SlabType.DOUBLE),
@@ -212,6 +211,14 @@ public class ModModelProvider extends FabricModelProvider {
 		generator.blockStateOutput.accept(multiPartGenerator);
 
 		LOGGER.info("Finished generating blockstate definitions and models!");
+	}
+
+	public static void createHeadForAllHorizontalFaces(MultiPartGenerator generator, ResourceLocation resourceLocation,
+													   Condition slabCondition, Condition stickyCondition) {
+		createForAllHorizontalFaces(generator, resourceLocation, slabCondition, stickyCondition,
+				Condition.condition().term(SlabPistonHeadBlock.SHORT, false));
+		createForAllHorizontalFaces(generator, resourceLocation.withSuffix("_short"), slabCondition,
+				stickyCondition, Condition.condition().term(SlabPistonHeadBlock.SHORT, true));
 	}
 
 	public static void createForAllHorizontalFaces(MultiPartGenerator generator,

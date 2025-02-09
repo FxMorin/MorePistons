@@ -8,10 +8,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import org.jetbrains.annotations.Nullable;
 
 @Getter
 public class SlabMovingBlockEntity extends BasicMovingBlockEntity {
+    public SlabType extendedSides;
 
     public SlabMovingBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);

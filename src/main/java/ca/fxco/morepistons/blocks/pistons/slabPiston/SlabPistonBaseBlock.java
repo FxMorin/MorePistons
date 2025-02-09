@@ -33,16 +33,15 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.level.block.SlabBlock.WATERLOGGED;
 
 public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleWaterloggedBlock {
-    protected static final VoxelShape BOTTOM_AABB = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
-    protected static final VoxelShape TOP_AABB = Block.box(0.0, 8.0, 0.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape BOTTOM_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
+    protected static final VoxelShape TOP_SHAPE = Block.box(0.0, 8.0, 0.0, 16.0, 16.0, 16.0);
     private static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
     public static final BooleanProperty EXTENDED_TOP = BooleanProperty.create("extended_top");
     public static final EnumProperty<Direction> FACING_TOP = EnumProperty.create("facing_top", Direction.class, Direction.Plane.HORIZONTAL);
     public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
     private static final Direction[] DIRECTIONS = {Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
-    protected static final VoxelShape[] BOTTOM_AABBS;
-    protected static final VoxelShape[] TOP_AABBS;
-    protected static final VoxelShape[][] DOUBLE_AABBS;
+    protected static final VoxelShape[] BOTTOM_SHAPES;
+    protected static final VoxelShape[] TOP_SHAPES;
 
     public SlabPistonBaseBlock(PistonController controller, Properties properties) {
         super(controller, properties);
@@ -63,23 +62,32 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         SlabType slabType = blockState.getValue(TYPE);
+        VoxelShape bottomShape = Shapes.empty();
+        VoxelShape topShape = Shapes.empty();
 
-        if (!blockState.getValue(EXTENDED)) {
-            return switch (slabType) {
-                case DOUBLE -> Shapes.block();
-                case TOP -> TOP_AABB;
-                default -> BOTTOM_AABB;
-            };
-        }
         Direction facing = blockState.getValue(FACING);
-        if (facing.ordinal() < 2)
+        if (facing.ordinal() < 2) {
             return Shapes.empty();
+        }
+        Direction facingTop = blockState.getValue(FACING_TOP);
 
-        return switch (slabType) {
-            case DOUBLE -> DOUBLE_AABBS[facing.ordinal() - 2][blockState.getValue(FACING_TOP).ordinal() - 2];
-            case TOP -> TOP_AABBS[blockState.getValue(FACING_TOP).ordinal() - 2];
-            default -> BOTTOM_AABBS[facing.ordinal() - 2];
-        };
+        if (slabType != SlabType.TOP) {
+            if (blockState.getValue(EXTENDED)) {
+                bottomShape = BOTTOM_SHAPES[facing.ordinal() - 2];
+            } else {
+                bottomShape = BOTTOM_SHAPE;
+            }
+        }
+
+        if (slabType != SlabType.BOTTOM) {
+            if (blockState.getValue(EXTENDED_TOP)) {
+                topShape = TOP_SHAPES[facingTop.ordinal() - 2];
+            } else {
+                topShape = TOP_SHAPE;
+            }
+        }
+
+        return Shapes.or(bottomShape, topShape);
     }
 
     @Nullable
@@ -91,11 +99,13 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
             if (blockState.getValue(TYPE) == SlabType.BOTTOM) {
                 return blockState.setValue(TYPE, SlabType.DOUBLE).setValue(WATERLOGGED, Boolean.FALSE)
                         .setValue(FACING_TOP, ctx.getHorizontalDirection().getOpposite())
-                        .setValue(FACING, blockState.getValue(FACING));
+                        .setValue(FACING, blockState.getValue(FACING))
+                        .setValue(EXTENDED_TOP, false);
             } else {
                 return blockState.setValue(TYPE, SlabType.DOUBLE).setValue(WATERLOGGED, Boolean.FALSE)
                         .setValue(FACING, ctx.getHorizontalDirection().getOpposite())
-                        .setValue(FACING_TOP, blockState.getValue(FACING_TOP));
+                        .setValue(FACING_TOP, blockState.getValue(FACING_TOP))
+                        .setValue(EXTENDED, false);
             }
 
         } else {
@@ -172,14 +182,13 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     }
 
     static {
-        BOTTOM_AABBS = new VoxelShape[4];
-        TOP_AABBS = new VoxelShape[4];
-        DOUBLE_AABBS = new VoxelShape[4][4];
+        BOTTOM_SHAPES = new VoxelShape[4];
+        TOP_SHAPES = new VoxelShape[4];
 
         for (Direction direction : DIRECTIONS) {
             float stepX = direction.getStepX() * 4;
             float stepZ = direction.getStepZ() * 4;
-            BOTTOM_AABBS[direction.ordinal() - 2] = Block.box(
+            BOTTOM_SHAPES[direction.ordinal() - 2] = Block.box(
                     (-stepX < 0 ? 0 : -stepX),
                     0,
                     (-stepZ < 0 ? 0 : -stepZ),
@@ -190,19 +199,13 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
         for (Direction direction : DIRECTIONS) {
             float stepX = direction.getStepX() * 4;
             float stepZ = direction.getStepZ() * 4;
-            TOP_AABBS[direction.ordinal() - 2] = Block.box(
+            TOP_SHAPES[direction.ordinal() - 2] = Block.box(
                     (-stepX < 0 ? 0 : -stepX),
                     8f,
                     (-stepZ < 0 ? 0 : -stepZ),
                     16 + (-stepX > 0 ? 0 : -stepX),
                     16F,
                     16 + (-stepZ > 0 ? 0 : -stepZ));
-        }
-        for (Direction direction : DIRECTIONS) {
-            for (Direction direction2 : DIRECTIONS) {
-                DOUBLE_AABBS[direction.ordinal() - 2][direction2.ordinal() - 2] =
-                        Shapes.or(BOTTOM_AABBS[direction.ordinal() - 2], TOP_AABBS[direction2.ordinal() - 2]);
-            }
         }
     }
 }

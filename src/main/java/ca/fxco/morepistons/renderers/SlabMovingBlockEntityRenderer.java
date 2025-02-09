@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 
 public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRenderer<SlabMovingBlockEntity> {
@@ -46,29 +47,28 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
         BlockPos fromPos = toPos.relative(moveDir.getOpposite());
 
         if (mbe.isSourcePiston()) {
-            this.renderMovingSource(mbe, level, fromPos, toPos, partialTick,
+            if (mbe.isExtending() || mbe.extendedSides != SlabType.TOP)
+                this.renderMovingSource(mbe, level, fromPos, toPos, partialTick,
                     stack, bufferSource, light, overlay, false);
         } else {
             this.renderMovingBlock(mbe, level, fromPos, toPos, partialTick, stack, bufferSource, light, overlay);
         }
 
         stack.popPose();
-        if (mbe.isSourcePiston() && !mbe.isExtending()) {
-            BlockState pistonState = mbe.getMovedState();
-            if (pistonState.getValue(SlabPistonBaseBlock.TYPE) == SlabType.DOUBLE) {
-                stack.pushPose();
-                Direction pistonDir = pistonState.getValue(SlabPistonBaseBlock.FACING_TOP);
-                stack.translate(mbe.getXOff(partialTick, pistonDir),
-                        mbe.getYOff(partialTick, pistonDir), mbe.getZOff(partialTick, pistonDir));
+        if (mbe.isSourcePiston() && !mbe.isExtending() && mbe.extendedSides != SlabType.BOTTOM
+                && state.getValue(SlabPistonBaseBlock.TYPE) == SlabType.DOUBLE) {
+            stack.pushPose();
+            Direction pistonDir = state.getValue(SlabPistonBaseBlock.FACING_TOP);
+            stack.translate(mbe.getXOff(partialTick, pistonDir),
+                    mbe.getYOff(partialTick, pistonDir), mbe.getZOff(partialTick, pistonDir));
 
-                fromPos = toPos.relative(pistonDir);
+            fromPos = toPos.relative(pistonDir);
 
-                this.renderMovingSource(mbe, level, fromPos, toPos, partialTick,
-                        stack, bufferSource, light, overlay, true);
+            this.renderMovingSource(mbe, level, fromPos, toPos, partialTick,
+                    stack, bufferSource, light, overlay, true);
 
 
-                stack.popPose();
-            }
+            stack.popPose();
         }
         stack.pushPose();
 
@@ -132,6 +132,27 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
             BlockState headState = state
                     .setValue(BasicPistonHeadBlock.SHORT, mbe.getProgress(partialTick) >= 0.5F);
             this.renderBlock(mbe, fromPos, headState, stack, bufferSource, level, false, overlay);
+        }
+    }
+
+    @Override
+    protected void renderStaticSource(SlabMovingBlockEntity mbe, Level level, BlockPos fromPos, BlockPos toPos, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int light, int overlay) {
+        if (!mbe.isExtending()) {
+            BlockState state = mbe.getMovedState();
+            if (state.getBlock() instanceof BasicPistonBaseBlock) {
+                this.renderBlock(mbe, fromPos, state
+                                .setValue(BlockStateProperties.EXTENDED,
+                                        mbe.extendedSides != SlabType.TOP)
+                                .setValue(SlabPistonBaseBlock.EXTENDED_TOP,
+                                        mbe.extendedSides != SlabType.BOTTOM),
+                        stack, bufferSource, level, false, overlay);
+            } else if (state.getBlock() instanceof BasicPistonHeadBlock) {
+                PistonFamily family = mbe.getFamily();
+                Direction facing = state.getValue(BasicPistonHeadBlock.FACING);
+                BlockState armState = family.getArm().defaultBlockState().setValue(BasicPistonHeadBlock.FACING, facing)
+                        .setValue(BasicPistonHeadBlock.SHORT, false);
+                this.renderBlock(mbe, fromPos, armState, stack, bufferSource, level, false, overlay);
+            }
         }
     }
 }

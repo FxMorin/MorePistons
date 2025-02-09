@@ -1,5 +1,6 @@
 package ca.fxco.morepistons.pistonLogic.controller;
 
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonBaseBlock;
 import ca.fxco.morepistons.pistonLogic.structureRunners.SlabPistonStructureRunner;
 import ca.fxco.pistonlib.PistonLibConfig;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.PistonType;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -136,6 +138,10 @@ public class SlabPistonController extends VanillaPistonController {
                     false,
                     true
             );
+            if (movingBaseBlockEntity instanceof SlabMovingBlockEntity slabMBE) {
+                slabMBE.extendedSides = state.getValue(EXTENDED) ? state.getValue(EXTENDED_TOP)
+                        ? SlabType.DOUBLE : SlabType.BOTTOM : SlabType.TOP;
+            }
             level.setBlock(sourcePos, movingBaseState, UPDATE_MOVE_BY_PISTON | UPDATE_KNOWN_SHAPE | UPDATE_INVISIBLE);
             level.setBlockEntity(movingBaseBlockEntity);
 
