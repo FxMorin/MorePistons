@@ -120,7 +120,7 @@ public class SlabPistonController extends VanillaPistonController {
                     .setValue(BasicPistonHeadBlock.FACING, Direction.from3DDataValue(data & 7))
                     .setValue(BasicPistonHeadBlock.TYPE, pistonType)
                     : state.getBlock().defaultBlockState()
-                    .setValue(FACING, Direction.from3DDataValue(data & 7))
+                    .setValue(FACING, state.getValue(SlabPistonBaseBlock.FACING))
                     .setValue(SlabPistonBaseBlock.FACING_TOP, state.getValue(SlabPistonBaseBlock.FACING_TOP))
                     .setValue(SlabPistonBaseBlock.TYPE, state.getValue(SlabPistonBaseBlock.TYPE));
 

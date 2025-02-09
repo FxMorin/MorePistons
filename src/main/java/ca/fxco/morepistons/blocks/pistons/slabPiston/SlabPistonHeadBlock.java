@@ -24,6 +24,7 @@ public class SlabPistonHeadBlock extends BasicPistonHeadBlock {
 
     public SlabPistonHeadBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(defaultBlockState().setValue(SLAB_TYPE, SlabType.BOTTOM));
     }
 
     @Override

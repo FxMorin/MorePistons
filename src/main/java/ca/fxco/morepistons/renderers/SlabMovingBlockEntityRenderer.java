@@ -47,7 +47,7 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
 
         if (mbe.isSourcePiston()) {
             this.renderMovingSource(mbe, level, fromPos, toPos, partialTick,
-                    stack, bufferSource, light, overlay, true);
+                    stack, bufferSource, light, overlay, false);
         } else {
             this.renderMovingBlock(mbe, level, fromPos, toPos, partialTick, stack, bufferSource, light, overlay);
         }
@@ -57,14 +57,14 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
             BlockState pistonState = mbe.getMovedState();
             if (pistonState.getValue(SlabPistonBaseBlock.TYPE) == SlabType.DOUBLE) {
                 stack.pushPose();
-                Direction pistonDir = pistonState.getValue(SlabPistonBaseBlock.FACING);
+                Direction pistonDir = pistonState.getValue(SlabPistonBaseBlock.FACING_TOP);
                 stack.translate(mbe.getXOff(partialTick, pistonDir),
                         mbe.getYOff(partialTick, pistonDir), mbe.getZOff(partialTick, pistonDir));
 
                 fromPos = toPos.relative(pistonDir);
 
                 this.renderMovingSource(mbe, level, fromPos, toPos, partialTick,
-                        stack, bufferSource, light, overlay, false);
+                        stack, bufferSource, light, overlay, true);
 
 
                 stack.popPose();
