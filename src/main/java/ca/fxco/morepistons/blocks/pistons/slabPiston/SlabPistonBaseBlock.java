@@ -36,6 +36,7 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     protected static final VoxelShape BOTTOM_AABB = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     protected static final VoxelShape TOP_AABB = Block.box(0.0, 8.0, 0.0, 16.0, 16.0, 16.0);
     private static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
+    public static final BooleanProperty EXTENDED_TOP = BooleanProperty.create("extended_top");
     public static final EnumProperty<Direction> FACING_TOP = EnumProperty.create("facing_top", Direction.class, Direction.Plane.HORIZONTAL);
     public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
     private static final Direction[] DIRECTIONS = {Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
@@ -45,12 +46,13 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
 
     public SlabPistonBaseBlock(PistonController controller, Properties properties) {
         super(controller, properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, Boolean.FALSE));
+        this.registerDefaultState(this.defaultBlockState().setValue(TYPE, SlabType.BOTTOM)
+                .setValue(WATERLOGGED, Boolean.FALSE).setValue(EXTENDED_TOP, Boolean.FALSE));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(TYPE, WATERLOGGED, EXTENDED, FACING, FACING_TOP);
+        builder.add(TYPE, WATERLOGGED, EXTENDED, EXTENDED_TOP, FACING, FACING_TOP);
     }
 
     @Override

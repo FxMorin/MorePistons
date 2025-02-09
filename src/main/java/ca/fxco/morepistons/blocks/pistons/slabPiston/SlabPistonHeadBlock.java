@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -32,10 +33,18 @@ public class SlabPistonHeadBlock extends BasicPistonHeadBlock {
 
     @Override
     public boolean isFittingBase(BlockState headState, BlockState behindState) {
+        BooleanProperty extended;
+        EnumProperty<Direction> direction;
+        if (headState.getValue(SLAB_TYPE) == SlabType.TOP) {
+            extended = SlabPistonBaseBlock.EXTENDED_TOP;
+            direction = SlabPistonBaseBlock.FACING_TOP;
+        } else {
+            extended = BlockStateProperties.EXTENDED;
+            direction = SlabPistonBaseBlock.FACING;
+        }
         return behindState.is(this.getFamily().getBase(headState.getValue(TYPE))) &&
-                behindState.getValue(BlockStateProperties.EXTENDED) &&
-                behindState.getValue(headState.getValue(SLAB_TYPE) == SlabType.TOP ?
-                        SlabPistonBaseBlock.FACING_TOP : FACING) == headState.getValue(FACING);
+                behindState.getValue(extended) &&
+                behindState.getValue(direction) == headState.getValue(FACING);
     }
 
     @Override
