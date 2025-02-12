@@ -7,7 +7,6 @@ import ca.fxco.pistonlib.api.pistonLogic.structure.StructureRunner;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicMovingBlock;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonHeadBlock;
 import ca.fxco.pistonlib.pistonLogic.structureRunners.BasicStructureRunner;
-import lombok.experimental.Delegate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -21,11 +20,45 @@ import static net.minecraft.world.level.block.Block.UPDATE_MOVE_BY_PISTON;
 
 public class SlabPistonStructureRunner implements StructureRunner {
 
-    @Delegate(types = StructureRunner.class)
     private final BasicStructureRunner delegate;
 
     public SlabPistonStructureRunner(BasicStructureRunner delegate) {
         this.delegate = delegate;
+    }
+
+    @Override
+    public void taskRemovePistonHeadOnRetract() {
+        this.delegate.taskRemovePistonHeadOnRetract();
+    }
+
+    @Override
+    public boolean taskRunStructureResolver() {
+        return this.delegate.taskRunStructureResolver();
+    }
+
+    @Override
+    public void taskSetPositionsToMove() {
+        this.delegate.taskSetPositionsToMove();
+    }
+
+    @Override
+    public void taskMergeBlocks() {
+        this.delegate.taskMergeBlocks();
+    }
+
+    @Override
+    public void taskDestroyBlocks() {
+        this.delegate.taskDestroyBlocks();
+    }
+
+    @Override
+    public void taskFixUpdatesAndStates() {
+        this.delegate.taskFixUpdatesAndStates();
+    }
+
+    @Override
+    public void taskMoveBlocks() {
+        this.delegate.taskMoveBlocks();
     }
 
     @Override
@@ -64,4 +97,33 @@ public class SlabPistonStructureRunner implements StructureRunner {
         }
     }
 
+    @Override
+    public void taskRemoveLeftOverBlocks() {
+        this.delegate.taskRemoveLeftOverBlocks();
+    }
+
+    @Override
+    public void taskDoRemoveNeighborUpdates() {
+        this.delegate.taskDoRemoveNeighborUpdates();
+    }
+
+    @Override
+    public void taskDoDestroyNeighborUpdates() {
+        this.delegate.taskDoDestroyNeighborUpdates();
+    }
+
+    @Override
+    public void taskDoMoveNeighborUpdates() {
+        this.delegate.taskDoMoveNeighborUpdates();
+    }
+
+    @Override
+    public void taskDoUnMergeUpdates() {
+        this.delegate.taskDoUnMergeUpdates();
+    }
+
+    @Override
+    public void taskDoPistonHeadExtendingUpdate() {
+        this.delegate.taskDoPistonHeadExtendingUpdate();
+    }
 }
