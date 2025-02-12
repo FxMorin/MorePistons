@@ -14,6 +14,8 @@ import ca.fxco.pistonlib.blocks.mergeBlock.MergeBlockEntity;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonArmBlock;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonHeadBlock;
 import ca.fxco.pistonlib.pistonLogic.controller.VanillaPistonController;
+import ca.fxco.pistonlib.pistonLogic.structureRunners.BasicStructureRunner;
+import ca.fxco.pistonlib.pistonLogic.structureRunners.MergingStructureRunner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -47,7 +49,16 @@ public class SlabPistonController extends VanillaPistonController {
             Level level, BlockPos pos, Direction facing, int length,
             boolean extend, StructureResolver.Factory<S> structureProvider
     ) {
-        return new SlabPistonStructureRunner(level, pos, facing, length, getFamily(), getType(), extend, structureProvider); //TODO add merge variant
+        // TODO: Fix the type so that the super returns a basic structure runner, since it does...
+        StructureRunner runner = super.newStructureRunner(level, pos, facing, length, extend, structureProvider);
+        if (runner instanceof BasicStructureRunner basicStructureRunner) {
+            return new SlabPistonStructureRunner(basicStructureRunner);
+        }
+        PistonFamily family = getFamily();
+        PistonType type = getType();
+        return new SlabPistonStructureRunner(PistonLibConfig.mergingApi ?
+                new MergingStructureRunner(level, pos, facing, length, family, type, extend , structureProvider) :
+                new BasicStructureRunner(level, pos, facing, length, family, type, extend , structureProvider));
     }
 
     @Override
