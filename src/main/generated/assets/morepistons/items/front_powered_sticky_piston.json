@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "morepistons:block/front_powered_sticky_piston_inventory"
+  }
+}

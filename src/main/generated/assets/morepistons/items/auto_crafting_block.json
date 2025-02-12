@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "morepistons:block/auto_crafting_block"
+  }
+}

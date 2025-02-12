@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "morepistons:block/move_counting_block"
+  }
+}

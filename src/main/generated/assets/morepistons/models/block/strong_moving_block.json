@@ -1,0 +1,6 @@
+{
+  "parent": "pistonlib:block/template_empty",
+  "textures": {
+    "particle": "morepistons:block/strong_piston_side"
+  }
+}

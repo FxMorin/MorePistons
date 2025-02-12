@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "morepistons:block/half_slime",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "morepistons:block/half_slime",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "morepistons:block/half_slime",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "morepistons:block/half_slime",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "morepistons:block/half_slime"
+    },
+    "facing=west": {
+      "model": "morepistons:block/half_slime",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

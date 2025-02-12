@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_piston",
+  "textures": {
+    "bottom": "morepistons:block/strong_piston_bottom",
+    "platform": "morepistons:block/strong_piston_top",
+    "side": "morepistons:block/strong_piston_side"
+  }
+}

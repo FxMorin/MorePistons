@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "morepistons:block/all_sided_observer"
+    },
+    "powered=true": {
+      "model": "morepistons:block/all_sided_observer_on"
+    }
+  }
+}

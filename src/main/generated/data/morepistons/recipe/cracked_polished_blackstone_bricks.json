@@ -1,0 +1,10 @@
+{
+  "type": "pistonlib:piston_crushing_single_conditional",
+  "condition": "HIGHER_RESISTANCE",
+  "data": 1199.0,
+  "ingredient": "minecraft:polished_blackstone_bricks",
+  "result": {
+    "count": 1,
+    "id": "minecraft:cracked_polished_blackstone_bricks"
+  }
+}

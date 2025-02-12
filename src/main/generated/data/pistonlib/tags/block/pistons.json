@@ -1,0 +1,29 @@
+{
+  "values": [
+    "minecraft:piston",
+    "minecraft:sticky_piston",
+    "morepistons:basic_piston",
+    "morepistons:basic_sticky_piston",
+    "morepistons:long_piston",
+    "morepistons:long_sticky_piston",
+    "morepistons:configurable_piston",
+    "morepistons:configurable_sticky_piston",
+    "morepistons:stale_piston",
+    "morepistons:stale_sticky_piston",
+    "morepistons:very_quasi_piston",
+    "morepistons:very_quasi_sticky_piston",
+    "morepistons:strong_piston",
+    "morepistons:strong_sticky_piston",
+    "morepistons:fast_piston",
+    "morepistons:fast_sticky_piston",
+    "morepistons:front_powered_piston",
+    "morepistons:front_powered_sticky_piston",
+    "morepistons:super_piston",
+    "morepistons:super_sticky_piston",
+    "morepistons:mbe_piston",
+    "morepistons:mbe_sticky_piston",
+    "morepistons:slab_piston",
+    "morepistons:slab_sticky_piston",
+    "morepistons:very_sticky_piston"
+  ]
+}

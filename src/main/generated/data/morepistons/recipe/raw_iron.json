@@ -1,0 +1,8 @@
+{
+  "type": "pistonlib:piston_crushing_single",
+  "ingredient": "minecraft:iron_ore",
+  "result": {
+    "count": 1,
+    "id": "minecraft:raw_iron"
+  }
+}

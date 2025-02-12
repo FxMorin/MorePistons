@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "morepistons:block/configurable_moving_block"
+    }
+  }
+}

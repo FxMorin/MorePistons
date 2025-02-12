@@ -1,0 +1,9 @@
+{
+  "type": "pistonlib:piston_crushing_single",
+  "ingredient": "minecraft:oak_planks",
+  "ingredientAmount": 2,
+  "result": {
+    "count": 4,
+    "id": "minecraft:stick"
+  }
+}

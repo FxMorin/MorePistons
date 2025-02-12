@@ -1,0 +1,833 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "morepistons:block/slab_moving_block"
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_short"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_short",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_short",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_short",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top_short"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top_short",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top_short",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_head_top_short",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "normal"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_short"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_short",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_short",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_short",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "bottom|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top_short"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top_short",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top_short",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/sticky_slab_piston_head_top_short",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "slab_type": "top|double"
+              },
+              {
+                "type": "sticky"
+              },
+              {
+                "short": "true"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

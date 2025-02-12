@@ -1,0 +1,8 @@
+{
+  "type": "pistonlib:piston_crushing_single",
+  "ingredient": "minecraft:copper_ore",
+  "result": {
+    "count": 1,
+    "id": "minecraft:raw_copper"
+  }
+}

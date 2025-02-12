@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "morepistons:block/auto_crafting_block"
+    }
+  }
+}

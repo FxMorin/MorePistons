@@ -1,0 +1,373 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "morepistons:block/slab_moving_block"
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "north"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_top",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "east"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_top",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "south"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_top",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "west"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "AND": [
+              {
+                "type": "bottom|double"
+              },
+              {
+                "extended": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "north"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended_top",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "east"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended_top",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "south"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "morepistons:block/slab_piston_extended_top",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing_top": "west"
+          },
+          {
+            "AND": [
+              {
+                "type": "top|double"
+              },
+              {
+                "extended_top": "true"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

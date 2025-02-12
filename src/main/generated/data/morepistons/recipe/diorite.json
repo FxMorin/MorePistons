@@ -1,0 +1,12 @@
+{
+  "type": "pistonlib:piston_crushing_multi",
+  "ingredients": [
+    "minecraft:stone",
+    "minecraft:quartz",
+    "minecraft:andesite"
+  ],
+  "result": {
+    "count": 3,
+    "id": "minecraft:diorite"
+  }
+}

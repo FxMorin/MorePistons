@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "morepistons:block/auto_crafting_block"
+  }
+}

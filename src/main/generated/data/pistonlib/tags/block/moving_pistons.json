@@ -1,0 +1,17 @@
+{
+  "values": [
+    "minecraft:moving_piston",
+    "morepistons:basic_moving_block",
+    "morepistons:long_moving_block",
+    "morepistons:configurable_moving_block",
+    "morepistons:stale_moving_block",
+    "morepistons:very_quasi_moving_block",
+    "morepistons:strong_moving_block",
+    "morepistons:fast_moving_block",
+    "morepistons:front_powered_moving_block",
+    "morepistons:super_moving_block",
+    "morepistons:mbe_moving_block",
+    "morepistons:slab_moving_block",
+    "morepistons:very_sticky_moving_block"
+  ]
+}

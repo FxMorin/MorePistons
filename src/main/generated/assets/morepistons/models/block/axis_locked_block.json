@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "morepistons:block/axis_locked_block_top",
+    "side": "morepistons:block/axis_locked_block"
+  }
+}
