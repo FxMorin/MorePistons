@@ -205,6 +205,12 @@ public class SlabPistonController extends VanillaPistonController {
 
         Direction facing = state.getValue(FACING);
         Direction facingTop = state.getValue(FACING_TOP);
+
+        if (state.getValue(SlabPistonBaseBlock.TYPE) != SlabType.DOUBLE || facing == facingTop) {
+            super.checkIfExtend(level, pos, state, onPlace);
+            return;
+        }
+
         int length = this.getLength(level, pos, state);
         int lengthTop = this.getTopLength(level, pos, state);
         boolean shouldExtend = hasNeighborSignal(level, pos, facing);
@@ -253,14 +259,16 @@ public class SlabPistonController extends VanillaPistonController {
             }
         }
 
-        if (shouldExtendTop && lengthTop < family.getMaxLength()) {
-            if (this.newStructureResolver(level, pos, facingTop, lengthTop, true).resolve()) {
-                level.blockEvent(pos, state.getBlock(), PistonEvents.EXTEND, facingTop.get3DDataValue());
-            }
-        } else if (!shouldExtendTop && lengthTop > family.getMinLength()) {
-            int type = getRetractType((ServerLevel)level, pos, facingTop, lengthTop);
-            if (type != PistonEvents.NONE) {
-                level.blockEvent(pos, state.getBlock(), type, facingTop.get3DDataValue());
+        if (facing != facingTop) {
+            if (shouldExtendTop && lengthTop < family.getMaxLength()) {
+                if (this.newStructureResolver(level, pos, facingTop, lengthTop, true).resolve()) {
+                    level.blockEvent(pos, state.getBlock(), PistonEvents.EXTEND, facingTop.get3DDataValue());
+                }
+            } else if (!shouldExtendTop && lengthTop > family.getMinLength()) {
+                int type = getRetractType((ServerLevel) level, pos, facingTop, lengthTop);
+                if (type != PistonEvents.NONE) {
+                    level.blockEvent(pos, state.getBlock(), type, facingTop.get3DDataValue());
+                }
             }
         }
     }
