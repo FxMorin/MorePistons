@@ -22,6 +22,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.MovingPistonBlock;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
@@ -63,50 +64,79 @@ public class SlabPistonController extends VanillaPistonController {
 
     @Override
     public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int type, int data) {
-        Direction facing = Direction.from3DDataValue(data);
-        Direction facingBottom = state.getValue(FACING);
-        Direction facingTop = state.getValue(FACING_TOP);
+        Direction facing = null;
+        Direction facingTop = null;
+        boolean isDifferentDirections;
+        if ((data & 0b1000000) != 0) {
+            int bottom = data & 7;
+            int top = (data >> 3) & 7;
+            if (bottom != 7) {
+                facing = Direction.from3DDataValue(bottom);
+            }
+
+            if (top != 7) {
+                facingTop = Direction.from3DDataValue(top);
+            }
+            isDifferentDirections = facing != facingTop;
+        } else {
+            facing = Direction.from3DDataValue(data);
+            isDifferentDirections = false;
+        }
+        boolean isBottomMoved = facing != null;
+        boolean isTopMoved = facingTop != null;
+        if (!isBottomMoved && !isTopMoved) {
+            return false;
+        }
+
         if (!level.isClientSide()) {
-            boolean shouldExtend = this.hasNeighborSignal(level, pos, facing);
+            boolean shouldExtend = isBottomMoved && this.hasNeighborSignal(level, pos, facing);
+            boolean shouldExtendTop = isTopMoved && this.hasNeighborSignal(level, pos, facingTop);
 
-            if (shouldExtend && PistonEvents.isRetract(type)) {
-                if (facingBottom == facingTop) {
-                    level.setBlock(pos, state.setValue(EXTENDED, true)
-                            .setValue(EXTENDED_TOP, true), UPDATE_CLIENTS);
-                } else if (facing == facingTop) {
-                    level.setBlock(pos, state.setValue(EXTENDED_TOP, true)
-                            .setValue(EXTENDED, state.getValue(EXTENDED)), UPDATE_CLIENTS);
-                } else {
-                    level.setBlock(pos, state.setValue(EXTENDED, true)
-                            .setValue(EXTENDED_TOP, state.getValue(EXTENDED_TOP)), UPDATE_CLIENTS);
-                }
-
+            if ((shouldExtend || shouldExtendTop) && PistonEvents.isRetract(type)) {
+                level.setBlock(pos, state.setValue(EXTENDED, true)
+                        .setValue(EXTENDED_TOP, true), UPDATE_CLIENTS);
                 return false;
             }
-            if (!shouldExtend && PistonEvents.isExtend(type)) {
+            if (!shouldExtend && !shouldExtendTop && PistonEvents.isExtend(type)) {
                 return false;
             }
         }
 
-        int length = facingTop == facing ? this.getTopLength(level, pos, state) : getLength(level, pos, state);
+        int length = getLength(level, pos, state);
+        int lengthTop = isTopMoved && isBottomMoved ? length : this.getTopLength(level, pos, state);
 
         if (PistonEvents.isExtend(type)) {
-            if (!this.moveBlocks(level, pos, facing, length, true)) {
+            boolean canMove = isBottomMoved && this.moveBlocks(level, pos, facing, length, true);
+            boolean topCanMove = isTopMoved && lengthTop != getFamily().getMaxLength() &&
+                    this.moveBlocks(level, pos, facingTop, lengthTop, true);
+
+            if (!canMove && !topCanMove) {
                 return false;
             }
 
-            if (length > 0) {
+           if (canMove && length > 0) {
                 BlockPos armPos = pos.relative(facing, length);
                 BlockState armState = getFamily().getArm().defaultBlockState().
                         setValue(BasicPistonArmBlock.FACING, facing).
                         setValue(BasicPistonArmBlock.SHORT, false);
 
                 level.setBlock(armPos, armState, UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
-            } else {
-                if (facingBottom == facingTop) {
+            }
+
+            if (topCanMove && lengthTop > 0) {
+                BlockPos armPos = pos.relative(facingTop, lengthTop);
+                BlockState armState = getFamily().getArm().defaultBlockState().
+                        setValue(BasicPistonArmBlock.FACING, facingTop).
+                        setValue(BasicPistonArmBlock.SHORT, false);
+
+                level.setBlock(armPos, armState, UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
+            }
+
+            if (length <= 0 && lengthTop <= 0) {
+                if (isBottomMoved && isTopMoved || !isDifferentDirections) {
                     level.setBlock(pos, state.setValue(EXTENDED, true)
                             .setValue(EXTENDED_TOP, true), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
-                } else if (facing == facingTop) {
+                } else if (isTopMoved) {
                     level.setBlock(pos, state.setValue(EXTENDED_TOP, true)
                             .setValue(EXTENDED, state.getValue(EXTENDED)), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
                 } else {
@@ -117,6 +147,13 @@ public class SlabPistonController extends VanillaPistonController {
 
             playEvents(level, GameEvent.BLOCK_ACTIVATE, pos);
         } else if (PistonEvents.isRetract(type)) {
+            if (!isBottomMoved) {
+                facing = facingTop;
+                length = lengthTop;
+            } else if (isTopMoved) {
+                level.setBlock(pos.relative(facingTop, lengthTop), Blocks.AIR.defaultBlockState(),
+                        UPDATE_MOVE_BY_PISTON | UPDATE_KNOWN_SHAPE | UPDATE_INVISIBLE);
+            }
             BlockPos headPos = pos.relative(facing, length);
             BlockEntity headBlockEntity = level.getBlockEntity(headPos);
 
@@ -160,35 +197,75 @@ public class SlabPistonController extends VanillaPistonController {
             movingBaseState.updateNeighbourShapes(level, sourcePos, UPDATE_CLIENTS);
 
             if (pistonType == PistonType.STICKY) {
-                boolean droppedBlock = false;
+                boolean droppedBlock;
+                BlockPos frontPos;
+                BlockState frontState;
+                if (isBottomMoved) {
+                    droppedBlock = false;
+                    frontPos = pos.relative(facing, length + 1);
+                    frontState = level.getBlockState(frontPos);
 
-                BlockPos frontPos = pos.relative(facing, length + 1);
-                BlockState frontState = level.getBlockState(frontPos);
+                    if (frontState.is(family.getMoving())) {
+                        BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
 
-                if (frontState.is(family.getMoving())) {
-                    BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
+                        if (frontBlockEntity instanceof PistonMovingBlockEntity mbe &&
+                                mbe.getDirection() == facing && mbe.isExtending()) {
+                            mbe.finalTick();
+                            droppedBlock = true;
+                        } else if (frontBlockEntity instanceof MergeBlockEntity mbe) {
+                            PLMergeBlockEntity.MergeData mergeData = mbe.getMergingBlocks().get(facing);
+                            mergeData.setProgress(1F);
+                            droppedBlock = true;
+                        }
+                    }
 
-                    if (frontBlockEntity instanceof PistonMovingBlockEntity mbe &&
-                            mbe.getDirection() == facing && mbe.isExtending()) {
-                        mbe.finalTick();
-                        droppedBlock = true;
-                    } else if (frontBlockEntity instanceof MergeBlockEntity mbe) {
-                        PLMergeBlockEntity.MergeData mergeData = mbe.getMergingBlocks().get(facing);
-                        mergeData.setProgress(1F);
-                        droppedBlock = true;
+                    if (!droppedBlock) {
+                        if (type == PistonEvents.RETRACT_NO_PULL || frontState.isAir() ||
+                                (frontState.getPistonPushReaction() != PushReaction.NORMAL &&
+                                        !frontState.is(ModTags.PISTONS)) ||
+                                !canMoveBlock(frontState, level, frontPos, facing.getOpposite(), false, facing)) {
+                            if (!PistonLibConfig.illegalBreakingFix ||
+                                    level.getBlockState(headPos).getDestroySpeed(level, headPos) != -1.0F) {
+                                level.removeBlock(headPos, false);
+                            }
+                        } else {
+                            this.moveBlocks(level, pos, facing, length, false);
+                        }
                     }
                 }
-                if (!droppedBlock) {
-                    if (type == PistonEvents.RETRACT_NO_PULL || frontState.isAir() ||
-                            (frontState.getPistonPushReaction() != PushReaction.NORMAL &&
-                                    !frontState.is(ModTags.PISTONS)) ||
-                            !canMoveBlock(frontState, level, frontPos, facing.getOpposite(), false, facing)) {
-                        if (!PistonLibConfig.illegalBreakingFix ||
-                                level.getBlockState(headPos).getDestroySpeed(level, headPos) != -1.0F) {
-                            level.removeBlock(headPos, false);
+
+                if (isTopMoved) {
+                    droppedBlock = false;
+                    headPos = pos.relative(facingTop, lengthTop);
+                    frontPos = pos.relative(facingTop, lengthTop + 1);
+                    frontState = level.getBlockState(frontPos);
+
+                    if (frontState.is(family.getMoving())) {
+                        BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
+
+                        if (frontBlockEntity instanceof PistonMovingBlockEntity mbe &&
+                                mbe.getDirection() == facingTop && mbe.isExtending()) {
+                            mbe.finalTick();
+                            droppedBlock = true;
+                        } else if (frontBlockEntity instanceof MergeBlockEntity mbe) {
+                            PLMergeBlockEntity.MergeData mergeData = mbe.getMergingBlocks().get(facingTop);
+                            mergeData.setProgress(1F);
+                            droppedBlock = true;
                         }
-                    } else {
-                        this.moveBlocks(level, pos, facing, length, false);
+                    }
+
+                    if (!droppedBlock) {
+                        if (type == PistonEvents.RETRACT_NO_PULL || frontState.isAir() ||
+                                (frontState.getPistonPushReaction() != PushReaction.NORMAL &&
+                                        !frontState.is(ModTags.PISTONS)) ||
+                                !canMoveBlock(frontState, level, frontPos, facingTop.getOpposite(), false, facingTop)) {
+                            if (!PistonLibConfig.illegalBreakingFix ||
+                                    level.getBlockState(headPos).getDestroySpeed(level, headPos) != -1.0F) {
+                                level.removeBlock(headPos, false);
+                            }
+                        } else {
+                            this.moveBlocks(level, pos, facingTop, lengthTop, false);
+                        }
                     }
                 }
             } else {
@@ -205,7 +282,28 @@ public class SlabPistonController extends VanillaPistonController {
     }
 
     public int getTopLength(Level level, BlockPos pos, BlockState state) {
-        return state.getValue(EXTENDED_TOP) ? this.getFamily().getMaxLength() : this.getFamily().getMinLength();
+        PistonFamily family = this.getFamily();
+        if (!state.getValue(EXTENDED_TOP)) {
+            return family.getMinLength();
+        } else {
+            int maxLength = family.getMaxLength();
+            if (maxLength == 1) {
+                return 1;
+            } else {
+                Direction facing = state.getValue(FACING_TOP);
+                int length = family.getMinLength();
+
+                while(length++ < maxLength) {
+                    BlockPos frontPos = pos.relative(facing, length);
+                    BlockState frontState = level.getBlockState(frontPos);
+                    if (!frontState.is(family.getArm())) {
+                        break;
+                    }
+                }
+
+                return length;
+            }
+        }
     }
 
     @Override
@@ -258,29 +356,41 @@ public class SlabPistonController extends VanillaPistonController {
                 }
             }
         }
+        int type = PistonEvents.NONE;
+        int bottom = facing.get3DDataValue() & 7;
+        int top = facingTop.get3DDataValue() & 7;
+        int packed = 0b1000000;
 
         if (shouldExtend && length < family.getMaxLength()) {
+            type = PistonEvents.EXTEND;
             if (this.newStructureResolver(level, pos, facing, length, true).resolve()) {
-                level.blockEvent(pos, state.getBlock(), PistonEvents.EXTEND, facing.get3DDataValue());
+                packed |= bottom;
+            } else {
+                packed |= 7;
             }
         } else if (!shouldExtend && length > family.getMinLength()) {
-            int type = getRetractType((ServerLevel)level, pos, facing, length);
-            if (type != PistonEvents.NONE) {
-                level.blockEvent(pos, state.getBlock(), type, facing.get3DDataValue());
-            }
+            type = getRetractType((ServerLevel)level, pos, facing, length);
+            packed = packed | bottom;
+        } else {
+            packed |= 7;
         }
 
-        if (facing != facingTop) {
-            if (shouldExtendTop && lengthTop < family.getMaxLength()) {
-                if (this.newStructureResolver(level, pos, facingTop, lengthTop, true).resolve()) {
-                    level.blockEvent(pos, state.getBlock(), PistonEvents.EXTEND, facingTop.get3DDataValue());
-                }
-            } else if (!shouldExtendTop && lengthTop > family.getMinLength()) {
-                int type = getRetractType((ServerLevel) level, pos, facingTop, lengthTop);
-                if (type != PistonEvents.NONE) {
-                    level.blockEvent(pos, state.getBlock(), type, facingTop.get3DDataValue());
-                }
+        if (shouldExtendTop && lengthTop < family.getMaxLength()) {
+            type = PistonEvents.EXTEND;
+            if (this.newStructureResolver(level, pos, facingTop, lengthTop, true).resolve()) {
+                packed |= (top << 3);
+            } else {
+                packed |= 0b111000;
             }
+        } else if (!shouldExtendTop && lengthTop > family.getMinLength()) {
+            type = getRetractType((ServerLevel)level, pos, facingTop, lengthTop);
+            packed |= (top << 3);
+        } else {
+            packed |= 0b111000;
+        }
+
+        if (type != PistonEvents.NONE) {
+            level.blockEvent(pos, state.getBlock(), type, packed);
         }
     }
 
