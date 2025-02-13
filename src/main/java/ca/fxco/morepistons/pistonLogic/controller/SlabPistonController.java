@@ -103,7 +103,8 @@ public class SlabPistonController extends VanillaPistonController {
         }
 
         int length = getLength(level, pos, state);
-        int lengthTop = isTopMoved && isBottomMoved ? length : this.getTopLength(level, pos, state);
+        int lengthTop = isTopMoved && isBottomMoved || !isDifferentDirections ?
+                length : this.getTopLength(level, pos, state);
 
         if (PistonEvents.isExtend(type)) {
             boolean canMove = isBottomMoved && this.moveBlocks(level, pos, facing, length, true);
@@ -114,7 +115,7 @@ public class SlabPistonController extends VanillaPistonController {
                 return false;
             }
 
-           if (canMove && length > 0) {
+            if (canMove && length > 0) {
                 BlockPos armPos = pos.relative(facing, length);
                 BlockState armState = getFamily().getArm().defaultBlockState().
                         setValue(BasicPistonArmBlock.FACING, facing).
@@ -132,17 +133,15 @@ public class SlabPistonController extends VanillaPistonController {
                 level.setBlock(armPos, armState, UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
             }
 
-            if (length <= 0 && lengthTop <= 0) {
-                if (isBottomMoved && isTopMoved || !isDifferentDirections) {
-                    level.setBlock(pos, state.setValue(EXTENDED, true)
-                            .setValue(EXTENDED_TOP, true), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
-                } else if (isTopMoved) {
-                    level.setBlock(pos, state.setValue(EXTENDED_TOP, true)
-                            .setValue(EXTENDED, state.getValue(EXTENDED)), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
-                } else {
-                    level.setBlock(pos, state.setValue(EXTENDED, true)
-                            .setValue(EXTENDED_TOP, state.getValue(EXTENDED_TOP)), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
-                }
+            if ((isBottomMoved && isTopMoved || !isDifferentDirections) && length <= 0) {
+                level.setBlock(pos, state.setValue(EXTENDED, true)
+                        .setValue(EXTENDED_TOP, true), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
+            } else if (isTopMoved && lengthTop <= 0) {
+                level.setBlock(pos, state.setValue(EXTENDED_TOP, true)
+                        .setValue(EXTENDED, state.getValue(EXTENDED)), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
+            } else if (length <= 0) {
+                level.setBlock(pos, state.setValue(EXTENDED, true)
+                        .setValue(EXTENDED_TOP, state.getValue(EXTENDED_TOP)), UPDATE_MOVE_BY_PISTON | UPDATE_ALL);
             }
 
             playEvents(level, GameEvent.BLOCK_ACTIVATE, pos);
