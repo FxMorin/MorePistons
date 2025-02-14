@@ -2,6 +2,7 @@ package ca.fxco.morepistons.pistonLogic.controller;
 
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonBaseBlock;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
 import ca.fxco.morepistons.pistonLogic.structureRunners.SlabPistonStructureRunner;
 import ca.fxco.pistonlib.PistonLibConfig;
 import ca.fxco.pistonlib.api.pistonLogic.PistonEvents;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.piston.MovingPistonBlock;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -391,6 +393,32 @@ public class SlabPistonController extends VanillaPistonController {
         if (type != PistonEvents.NONE) {
             level.blockEvent(pos, state.getBlock(), type, packed);
         }
+    }
+
+    @Override
+    public BlockState getHeadState(BlockPos pistonPos, Level level, Direction pushingDir) {
+        BlockState pistonState;
+        if (level.getBlockEntity(pistonPos) instanceof SlabMovingBlockEntity entity) {
+            pistonState = entity.getMovedState();
+        } else {
+            pistonState = level.getBlockState(pistonPos);
+        }
+
+        Direction pistonFacing = pistonState.getValue(SlabPistonBaseBlock.FACING);
+        Direction pistonFacingTop = pistonState.getValue(SlabPistonBaseBlock.FACING_TOP);
+        SlabType slabType = pistonState.getValue(BlockStateProperties.SLAB_TYPE);
+        if (slabType == SlabType.DOUBLE && pistonFacing != pistonFacingTop) {
+            if (pushingDir == pistonFacing) {
+                slabType = SlabType.BOTTOM;
+            } else {
+                slabType = SlabType.TOP;
+            }
+        }
+
+        return getFamily().getHead().defaultBlockState()
+                .setValue(BasicPistonHeadBlock.TYPE, getType())
+                .setValue(BasicPistonHeadBlock.FACING, pushingDir)
+                .setValue(SlabPistonHeadBlock.SLAB_TYPE, slabType);
     }
 
 }

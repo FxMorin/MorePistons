@@ -1,6 +1,7 @@
 package ca.fxco.morepistons.mixin.merging;
 
 import ca.fxco.morepistons.MorePistonsConfig;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
 import ca.fxco.pistonlib.api.block.PLBlockBehaviour;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import org.spongepowered.asm.mixin.Mixin;
+
+import java.util.Optional;
 
 @Mixin(SlabBlock.class)
 public class SlabBlockMixin implements PLBlockBehaviour {
@@ -45,21 +48,44 @@ public class SlabBlockMixin implements PLBlockBehaviour {
         return mergingIntoState.setValue(BlockStateProperties.SLAB_TYPE, SlabType.DOUBLE);
     }
 
-    //TODO: This is temporary for testing!
-    // Slab blocks will need either half sticky blocks or half piston blocks to unmerge like this
-
     @Override
     public boolean pl$canUnMerge(BlockState state, BlockGetter level, BlockPos pos,
                                  BlockState neighborState, Direction direction) {
-        return state.getValue(BlockStateProperties.SLAB_TYPE) == SlabType.DOUBLE;
+        if (state.getValue(BlockStateProperties.SLAB_TYPE) != SlabType.DOUBLE) {
+            return false;
+        }
+
+        Optional<SlabType> neighbourType = neighborState.getOptionalValue(BlockStateProperties.SLAB_TYPE);
+
+        if (neighbourType.isEmpty()) {
+            neighbourType = neighborState.getOptionalValue(SlabPistonHeadBlock.SLAB_TYPE);
+            if (neighbourType.isEmpty()) {
+                return false;
+            }
+        }
+
+        return neighbourType.get() != SlabType.DOUBLE;
     }
 
     @Override
     public Pair<BlockState, BlockState> pl$doUnMerge(BlockState state, BlockGetter level,
-                                                     BlockPos pos, Direction direction) {
+                                                     BlockPos pos, Direction direction, BlockState pullingState) {
+        SlabType type = pullingState.getValue(pullingState.hasProperty(BlockStateProperties.SLAB_TYPE) ?
+                BlockStateProperties.SLAB_TYPE : SlabPistonHeadBlock.SLAB_TYPE);
+
+        SlabType firstType;
+        SlabType secondType;
+        if (type == SlabType.BOTTOM) {
+            firstType = type;
+            secondType = SlabType.TOP;
+        } else {
+            firstType = type;
+            secondType = SlabType.BOTTOM;
+        }
+
         return new Pair<>(
-                state.setValue(BlockStateProperties.SLAB_TYPE, SlabType.BOTTOM),
-                state.setValue(BlockStateProperties.SLAB_TYPE, SlabType.TOP)
+                state.setValue(BlockStateProperties.SLAB_TYPE, firstType),
+                state.setValue(BlockStateProperties.SLAB_TYPE, secondType)
         );
     }
 }

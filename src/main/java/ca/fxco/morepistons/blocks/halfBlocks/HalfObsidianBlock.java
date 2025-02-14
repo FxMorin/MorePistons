@@ -90,7 +90,7 @@ public class HalfObsidianBlock extends Block {
 
     @Override
     public Pair<BlockState, BlockState> pl$doUnMerge(BlockState state, BlockGetter level,
-                                                     BlockPos pos, Direction direction) {
+                                                     BlockPos pos, Direction direction, BlockState pullingState) {
         SlabType stone = state.getValue(FACING) == Direction.UP ? SlabType.BOTTOM : SlabType.TOP;
         SlabType obsidian = stone == SlabType.TOP ? SlabType.BOTTOM : SlabType.TOP;
         return new Pair<>(

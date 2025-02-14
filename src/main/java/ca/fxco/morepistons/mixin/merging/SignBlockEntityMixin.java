@@ -19,6 +19,8 @@ public abstract class SignBlockEntityMixin implements BlockEntityPistonMerging {
     @Shadow
     public abstract SignText getFrontText();
 
+    @Shadow public abstract SignText getBackText();
+
     @Override
     public boolean pl$shouldStoreSelf(PLMergeBlockEntity mergeBlockEntity) {
         return true;
@@ -43,6 +45,7 @@ public abstract class SignBlockEntityMixin implements BlockEntityPistonMerging {
                     }
                 }
                 text = signBlockEntity.getBackText();
+                self = this.getBackText();
             }
         }
     }

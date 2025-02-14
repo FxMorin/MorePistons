@@ -119,7 +119,7 @@ public class AutoCraftingBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable Pair<BlockState, BlockState> pl$doUnMerge(BlockState state, BlockGetter level,
-                                                            BlockPos pos, Direction direction) {
+                                                            BlockPos pos, Direction direction, BlockState pullingState) {
         return null; // Handled by the block entity
     }
 
