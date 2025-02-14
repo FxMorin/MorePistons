@@ -107,6 +107,10 @@ public class ModModelProvider extends FabricModelProvider {
 		).with(BlockModelGenerators.createFacingDispatch()));
 
 		generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.STICKY_CHAIN_BLOCK, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.STICKY_CHAIN_BLOCK))).with(BlockModelGenerators.createRotatedPillar()));
+		ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(ModBlocks.SLIME_SLAB);
+		generator.blockStateOutput.accept(BlockModelGenerators.createSlab(ModBlocks.SLIME_SLAB,
+				modelLocation, modelLocation.withSuffix("_top"), modelLocation.withSuffix("_double")));
+
 
 		ResourceLocation pistonParticleModel = TEMPLATE_PARTICLE_ONLY.create(ModBlocks.SLAB_MOVING_BLOCK,
 				new TextureMapping().put(TextureSlot.PARTICLE,
@@ -115,7 +119,7 @@ public class ModModelProvider extends FabricModelProvider {
 		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(
 				ModBlocks.SLAB_MOVING_BLOCK, pistonParticleModel));
 
-		ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON);
+		modelLocation = ModelLocationUtils.getModelLocation(ModBlocks.SLAB_PISTON);
 		MultiPartGenerator multiPartGenerator =
 				MultiPartGenerator.multiPart(ModBlocks.SLAB_PISTON)
 						.with(Variant.variant()

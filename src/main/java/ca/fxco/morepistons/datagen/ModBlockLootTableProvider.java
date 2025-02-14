@@ -45,6 +45,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
         LOGGER.info("Finished generating block loot tables for pistons, generating for other blocks...");
 
         dropSelf(ModBlocks.HALF_SLIME_BLOCK);
+        dropSelf(ModBlocks.SLIME_SLAB);
         dropSelf(ModBlocks.HALF_HONEY_BLOCK);
         dropSelf(ModBlocks.HALF_REDSTONE_BLOCK);
         dropSelf(ModBlocks.HALF_OBSIDIAN_BLOCK);

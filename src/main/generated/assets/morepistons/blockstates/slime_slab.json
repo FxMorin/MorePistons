@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "morepistons:block/slime_slab"
+    },
+    "type=double": {
+      "model": "morepistons:block/slime_slab_double"
+    },
+    "type=top": {
+      "model": "morepistons:block/slime_slab_top"
+    }
+  }
+}

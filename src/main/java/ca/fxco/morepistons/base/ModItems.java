@@ -25,6 +25,7 @@ public class ModItems {
     public static final PistonDebugWandItem PISTON_DEBUG_WAND = register(id("piston_debug_wand"), PistonDebugWandItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
 
     public static final BlockItem HALF_SLIME_BLOCK = registerBlock(ModBlocks.HALF_SLIME_BLOCK);
+    public static final BlockItem SLIME_SLAB = registerBlock(ModBlocks.SLIME_SLAB);
     public static final BlockItem HALF_HONEY_BLOCK = registerBlock(ModBlocks.HALF_HONEY_BLOCK);
     public static final BlockItem HALF_REDSTONE_BLOCK = registerBlock(ModBlocks.HALF_REDSTONE_BLOCK);
     public static final BlockItem HALF_OBSIDIAN_BLOCK = registerBlock(ModBlocks.HALF_OBSIDIAN_BLOCK);
