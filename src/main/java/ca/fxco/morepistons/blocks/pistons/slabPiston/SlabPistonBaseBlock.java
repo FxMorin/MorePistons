@@ -1,5 +1,6 @@
 package ca.fxco.morepistons.blocks.pistons.slabPiston;
 
+import ca.fxco.morepistons.base.ModBlockStateProperties;
 import ca.fxco.pistonlib.api.pistonLogic.controller.PistonController;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonBaseBlock;
 import net.minecraft.core.BlockPos;
@@ -36,8 +37,8 @@ public class SlabPistonBaseBlock extends BasicPistonBaseBlock implements SimpleW
     protected static final VoxelShape BOTTOM_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     protected static final VoxelShape TOP_SHAPE = Block.box(0.0, 8.0, 0.0, 16.0, 16.0, 16.0);
     private static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
-    public static final BooleanProperty EXTENDED_TOP = BooleanProperty.create("extended_top");
-    public static final EnumProperty<Direction> FACING_TOP = EnumProperty.create("facing_top", Direction.class, Direction.Plane.HORIZONTAL);
+    public static final BooleanProperty EXTENDED_TOP = ModBlockStateProperties.EXTENDED_TOP;
+    public static final EnumProperty<Direction> FACING_TOP = ModBlockStateProperties.FACING_TOP;
     public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
     private static final Direction[] DIRECTIONS = {Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
     protected static final VoxelShape[] BOTTOM_SHAPES;

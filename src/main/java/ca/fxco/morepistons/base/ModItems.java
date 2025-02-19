@@ -27,6 +27,7 @@ public class ModItems {
     public static final BlockItem HALF_SLIME_BLOCK = registerBlock(ModBlocks.HALF_SLIME_BLOCK);
     public static final BlockItem SLIME_SLAB = registerBlock(ModBlocks.SLIME_SLAB);
     public static final BlockItem HALF_HONEY_BLOCK = registerBlock(ModBlocks.HALF_HONEY_BLOCK);
+    public static final BlockItem HONEY_SLAB = registerBlock(ModBlocks.HONEY_SLAB);
     public static final BlockItem HALF_REDSTONE_BLOCK = registerBlock(ModBlocks.HALF_REDSTONE_BLOCK);
     public static final BlockItem HALF_OBSIDIAN_BLOCK = registerBlock(ModBlocks.HALF_OBSIDIAN_BLOCK);
     public static final BlockItem HALF_REDSTONE_LAMP_BLOCK = registerBlock(ModBlocks.HALF_REDSTONE_LAMP_BLOCK);

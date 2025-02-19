@@ -31,6 +31,7 @@ public class ModCreativeModeTabs {
                     output.accept(ModItems.HALF_SLIME_BLOCK);
                     output.accept(ModItems.SLIME_SLAB);
                     output.accept(ModItems.HALF_HONEY_BLOCK);
+                    output.accept(ModItems.HONEY_SLAB);
                     output.accept(ModItems.HALF_REDSTONE_BLOCK);
                     output.accept(ModItems.HALF_OBSIDIAN_BLOCK);
                     output.accept(ModItems.HALF_REDSTONE_LAMP_BLOCK);

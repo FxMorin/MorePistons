@@ -26,6 +26,7 @@ public class MorePistonsClient implements ClientModInitializer {
         renderLayers.putBlock(ModBlocks.HALF_SLIME_BLOCK, RenderType.translucent());
         renderLayers.putBlock(ModBlocks.SLIME_SLAB, RenderType.translucent());
         renderLayers.putBlock(ModBlocks.HALF_HONEY_BLOCK, RenderType.translucent());
+        renderLayers.putBlock(ModBlocks.HONEY_SLAB, RenderType.translucent());
         renderLayers.putBlock(ModBlocks.SLIMY_REDSTONE_BLOCK, RenderType.translucent());
         renderLayers.putBlock(ModBlocks.STICKY_CHAIN_BLOCK, RenderType.cutoutMipped());
     }

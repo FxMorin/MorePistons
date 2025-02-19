@@ -1,7 +1,6 @@
 package ca.fxco.morepistons;
 
 import ca.fxco.morepistons.base.*;
-import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.PistonLibInitializer;
 import ca.fxco.pistonlib.api.config.ConfigFieldEntrypoint;
 import net.fabricmc.api.EnvType;

@@ -1,5 +1,6 @@
 package ca.fxco.morepistons.renderers;
 
+import ca.fxco.morepistons.base.ModBlockStateProperties;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonBaseBlock;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
@@ -58,7 +59,7 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
         if (mbe.isSourcePiston() && !mbe.isExtending() && mbe.extendedSides != SlabType.BOTTOM
                 && state.getValue(SlabPistonBaseBlock.TYPE) == SlabType.DOUBLE) {
             stack.pushPose();
-            Direction pistonDir = state.getValue(SlabPistonBaseBlock.FACING_TOP);
+            Direction pistonDir = state.getValue(ModBlockStateProperties.FACING_TOP);
             stack.translate(mbe.getXOff(partialTick, pistonDir),
                     mbe.getYOff(partialTick, pistonDir), mbe.getZOff(partialTick, pistonDir));
 
@@ -99,7 +100,7 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
             switch (state.getValue(SlabPistonBaseBlock.TYPE)) {
                 case DOUBLE -> {
                     facing = state.getValue(BasicPistonBaseBlock.FACING);
-                    Direction topFacing = state.getValue(SlabPistonBaseBlock.FACING_TOP);
+                    Direction topFacing = state.getValue(ModBlockStateProperties.FACING_TOP);
                     if (facing != topFacing) {
                         if (isSecondArm) {
                             armType = SlabType.TOP;
@@ -113,7 +114,7 @@ public class SlabMovingBlockEntityRenderer extends BasicMovingBlockEntityRendere
                 }
                 case TOP -> {
                     armType = SlabType.TOP;
-                    facing = state.getValue(SlabPistonBaseBlock.FACING_TOP);
+                    facing = state.getValue(ModBlockStateProperties.FACING_TOP);
                 }
                 default -> {
                     armType = SlabType.BOTTOM;

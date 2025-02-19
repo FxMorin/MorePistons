@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "morepistons:block/honey_slab"
+    },
+    "type=double": {
+      "model": "morepistons:block/honey_slab_double"
+    },
+    "type=top": {
+      "model": "morepistons:block/honey_slab_top"
+    }
+  }
+}

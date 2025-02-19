@@ -47,6 +47,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
         dropSelf(ModBlocks.HALF_SLIME_BLOCK);
         dropSelf(ModBlocks.SLIME_SLAB);
         dropSelf(ModBlocks.HALF_HONEY_BLOCK);
+        dropSelf(ModBlocks.HONEY_SLAB);
         dropSelf(ModBlocks.HALF_REDSTONE_BLOCK);
         dropSelf(ModBlocks.HALF_OBSIDIAN_BLOCK);
         dropSelf(ModBlocks.HALF_REDSTONE_LAMP_BLOCK);

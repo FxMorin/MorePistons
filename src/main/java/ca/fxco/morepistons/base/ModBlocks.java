@@ -51,6 +51,7 @@ public class ModBlocks {
     public static final Block HALF_SLIME_BLOCK = register("half_slime", HalfSlimeBlock::new, Blocks.SLIME_BLOCK);
     public static final Block SLIME_SLAB = register("slime_slab", SlimeSlab::new, Blocks.SLIME_BLOCK);
     public static final Block HALF_HONEY_BLOCK = register("half_honey", HalfHoneyBlock::new, Blocks.HONEY_BLOCK);
+    public static final Block HONEY_SLAB = register("honey_slab", HoneySlab::new, Blocks.HONEY_BLOCK);
     public static final Block HALF_REDSTONE_BLOCK = register("half_redstone", HalfPoweredBlock::new, Blocks.REDSTONE_BLOCK);
     public static final Block HALF_OBSIDIAN_BLOCK = register("half_obsidian", HalfObsidianBlock::new, Blocks.OBSIDIAN);
     public static final Block HALF_REDSTONE_LAMP_BLOCK = register("half_redstone_lamp", HalfRedstoneLampBlock::new, Blocks.REDSTONE_LAMP);

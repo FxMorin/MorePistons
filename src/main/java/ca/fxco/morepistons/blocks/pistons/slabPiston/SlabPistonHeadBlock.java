@@ -1,6 +1,6 @@
 package ca.fxco.morepistons.blocks.pistons.slabPiston;
 
-import ca.fxco.morepistons.base.ModBlockProperties;
+import ca.fxco.morepistons.base.ModBlockStateProperties;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonHeadBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +17,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SlabPistonHeadBlock extends BasicPistonHeadBlock {
-    public static final EnumProperty<SlabType> SLAB_TYPE = ModBlockProperties.HEAD_SLAB_TYPE;
+    public static final EnumProperty<SlabType> SLAB_TYPE = ModBlockStateProperties.HEAD_SLAB_TYPE;
     protected static final VoxelShape[] BOTTOM_SHAPES = new VoxelShape[4];
     protected static final VoxelShape[] TOP_SHAPES = new VoxelShape[4];
 
