@@ -3,20 +3,15 @@ package ca.fxco.morepistons.pistonLogic.controller;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabMovingBlockEntity;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonBaseBlock;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
-import ca.fxco.morepistons.pistonLogic.structureRunners.SlabPistonStructureRunner;
 import ca.fxco.pistonlib.PistonLibConfig;
 import ca.fxco.pistonlib.api.pistonLogic.PistonEvents;
 import ca.fxco.pistonlib.api.pistonLogic.base.PLMergeBlockEntity;
 import ca.fxco.pistonlib.api.pistonLogic.families.PistonFamily;
-import ca.fxco.pistonlib.api.pistonLogic.structure.StructureResolver;
-import ca.fxco.pistonlib.api.pistonLogic.structure.StructureRunner;
 import ca.fxco.pistonlib.base.ModTags;
 import ca.fxco.pistonlib.blocks.mergeBlock.MergeBlockEntity;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonArmBlock;
 import ca.fxco.pistonlib.blocks.pistons.basePiston.BasicPistonHeadBlock;
 import ca.fxco.pistonlib.pistonLogic.controller.VanillaPistonController;
-import ca.fxco.pistonlib.pistonLogic.structureRunners.BasicStructureRunner;
-import ca.fxco.pistonlib.pistonLogic.structureRunners.MergingStructureRunner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +22,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.MovingPistonBlock;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
-import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.PistonType;
@@ -45,23 +39,6 @@ public class SlabPistonController extends VanillaPistonController {
 
     public SlabPistonController(PistonType type) {
         super(type);
-    }
-
-    @Override
-    public <S extends PistonStructureResolver & StructureResolver> StructureRunner newStructureRunner(
-            Level level, BlockPos pos, Direction facing, int length,
-            boolean extend, StructureResolver.Factory<S> structureProvider
-    ) {
-        // TODO: Fix the type so that the super returns a basic structure runner, since it does...
-        StructureRunner runner = super.newStructureRunner(level, pos, facing, length, extend, structureProvider);
-        if (runner instanceof BasicStructureRunner basicStructureRunner) {
-            return new SlabPistonStructureRunner(basicStructureRunner);
-        }
-        PistonFamily family = getFamily();
-        PistonType type = getType();
-        return new SlabPistonStructureRunner(PistonLibConfig.mergingApi ?
-                new MergingStructureRunner(level, pos, facing, length, family, type, extend , structureProvider) :
-                new BasicStructureRunner(level, pos, facing, length, family, type, extend , structureProvider));
     }
 
     @Override
@@ -396,9 +373,9 @@ public class SlabPistonController extends VanillaPistonController {
     }
 
     @Override
-    public BlockState getHeadState(BlockPos pistonPos, Level level, Direction pushingDir) {
+    public BlockState getHeadState(BlockPos pistonPos, Level level, Direction facing, boolean extending) {
         BlockState pistonState;
-        if (level.getBlockEntity(pistonPos) instanceof SlabMovingBlockEntity entity) {
+        if (!extending && level.getBlockEntity(pistonPos) instanceof SlabMovingBlockEntity entity) {
             pistonState = entity.getMovedState();
         } else {
             pistonState = level.getBlockState(pistonPos);
@@ -408,7 +385,7 @@ public class SlabPistonController extends VanillaPistonController {
         Direction pistonFacingTop = pistonState.getValue(SlabPistonBaseBlock.FACING_TOP);
         SlabType slabType = pistonState.getValue(BlockStateProperties.SLAB_TYPE);
         if (slabType == SlabType.DOUBLE && pistonFacing != pistonFacingTop) {
-            if (pushingDir == pistonFacing) {
+            if (facing == pistonFacing) {
                 slabType = SlabType.BOTTOM;
             } else {
                 slabType = SlabType.TOP;
@@ -417,7 +394,7 @@ public class SlabPistonController extends VanillaPistonController {
 
         return getFamily().getHead().defaultBlockState()
                 .setValue(BasicPistonHeadBlock.TYPE, getType())
-                .setValue(BasicPistonHeadBlock.FACING, pushingDir)
+                .setValue(BasicPistonHeadBlock.FACING, facing)
                 .setValue(SlabPistonHeadBlock.SLAB_TYPE, slabType);
     }
 

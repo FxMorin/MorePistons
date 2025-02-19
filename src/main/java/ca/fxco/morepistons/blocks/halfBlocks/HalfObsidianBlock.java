@@ -4,7 +4,6 @@ import ca.fxco.morepistons.base.ModBlocks;
 import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyType;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
