@@ -35,9 +35,9 @@ public class SlabBlockMixin implements PLBlockBehaviour {
             return false;
         }
         if (direction == Direction.UP) {
-            return type2 != SlabType.BOTTOM && type1 == SlabType.BOTTOM;
-        } else if (direction == Direction.DOWN) {
             return type2 != SlabType.TOP && type1 == SlabType.TOP;
+        } else if (direction == Direction.DOWN) {
+            return type2 != SlabType.BOTTOM && type1 == SlabType.BOTTOM;
         }
         return true;
     }
@@ -60,7 +60,7 @@ public class SlabBlockMixin implements PLBlockBehaviour {
         if (neighbourType.isEmpty()) {
             neighbourType = neighborState.getOptionalValue(SlabPistonHeadBlock.SLAB_TYPE);
             if (neighbourType.isEmpty()) {
-                return false;
+                return direction.getAxis() == Direction.Axis.Y;
             }
         }
 
@@ -70,17 +70,28 @@ public class SlabBlockMixin implements PLBlockBehaviour {
     @Override
     public Pair<BlockState, BlockState> pl$doUnMerge(BlockState state, BlockGetter level,
                                                      BlockPos pos, Direction direction, BlockState pullingState) {
-        SlabType type = pullingState.getValue(pullingState.hasProperty(BlockStateProperties.SLAB_TYPE) ?
-                BlockStateProperties.SLAB_TYPE : SlabPistonHeadBlock.SLAB_TYPE);
-
         SlabType firstType;
         SlabType secondType;
-        if (type == SlabType.BOTTOM) {
-            firstType = type;
-            secondType = SlabType.TOP;
+
+        if (direction.getAxis() == Direction.Axis.Y) {
+            if (direction == Direction.DOWN) {
+                firstType = SlabType.BOTTOM;
+                secondType = SlabType.TOP;
+            } else {
+                firstType = SlabType.TOP;
+                secondType = SlabType.BOTTOM;
+            }
         } else {
-            firstType = type;
-            secondType = SlabType.BOTTOM;
+            SlabType type = pullingState.getValue(pullingState.hasProperty(BlockStateProperties.SLAB_TYPE) ?
+                    BlockStateProperties.SLAB_TYPE : SlabPistonHeadBlock.SLAB_TYPE);
+
+            if (type == SlabType.BOTTOM) {
+                firstType = type;
+                secondType = SlabType.TOP;
+            } else {
+                firstType = type;
+                secondType = SlabType.BOTTOM;
+            }
         }
 
         return new Pair<>(

@@ -1,8 +1,10 @@
 package ca.fxco.morepistons.blocks.halfBlocks;
 
 import ca.fxco.morepistons.base.ModBlocks;
+import ca.fxco.morepistons.blocks.pistons.slabPiston.SlabPistonHeadBlock;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickyType;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class HalfObsidianBlock extends Block {
 
@@ -85,7 +88,21 @@ public class HalfObsidianBlock extends Block {
     @Override
     public boolean pl$canUnMerge(BlockState state, BlockGetter level, BlockPos pos,
                                  BlockState neighborState, Direction direction) {
-        return state.getValue(FACING).getAxis() == Direction.Axis.Y;
+        Direction facing = state.getValue(FACING);
+        if (facing.getAxis() != Direction.Axis.Y) {
+            return false;
+        }
+
+        Optional<SlabType> neighbourType = neighborState.getOptionalValue(BlockStateProperties.SLAB_TYPE);
+
+        if (neighbourType.isEmpty()) {
+            neighbourType = neighborState.getOptionalValue(SlabPistonHeadBlock.SLAB_TYPE);
+            if (neighbourType.isEmpty()) {
+                return direction.getAxis() == Direction.Axis.Y;
+            }
+        }
+
+        return facing == Direction.UP ? neighbourType.get() == SlabType.BOTTOM : neighbourType.get() == SlabType.TOP;
     }
 
     @Override

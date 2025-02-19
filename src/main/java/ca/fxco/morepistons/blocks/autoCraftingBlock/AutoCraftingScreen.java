@@ -1,6 +1,6 @@
 package ca.fxco.morepistons.blocks.autoCraftingBlock;
 
-import ca.fxco.pistonlib.PistonLib;
+import ca.fxco.morepistons.MorePistons;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,7 +15,7 @@ import net.minecraft.world.inventory.Slot;
 @Environment(EnvType.CLIENT)
 public class AutoCraftingScreen extends AbstractContainerScreen<AutoCraftingMenu> {
 
-    private static final ResourceLocation CRAFTING_TABLE_LOCATION = PistonLib.id("textures/gui/container/auto_crafting_block.png");
+    private static final ResourceLocation CRAFTING_TABLE_LOCATION = MorePistons.id("textures/gui/container/auto_crafting_block.png");
 
     public AutoCraftingScreen(AutoCraftingMenu abstractContainerMenu, Inventory inventory, Component component) {
         super(abstractContainerMenu, inventory, component);
@@ -37,6 +37,5 @@ public class AutoCraftingScreen extends AbstractContainerScreen<AutoCraftingMenu
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int i, int j) {
         guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752);
-        //this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
     }
 }

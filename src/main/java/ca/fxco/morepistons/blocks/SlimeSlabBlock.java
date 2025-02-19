@@ -1,4 +1,4 @@
-package ca.fxco.morepistons.blocks.halfBlocks;
+package ca.fxco.morepistons.blocks;
 
 import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickRules;
@@ -23,11 +23,11 @@ import java.util.Optional;
 
 import static ca.fxco.morepistons.utils.HalfBlockUtils.SIDES_LIST;
 
-public class SlimeSlab extends SlabBlock {
+public class SlimeSlabBlock extends SlabBlock {
 
     public static final Map<Direction, StickyType> STICKY_SIDES = new HashMap<>();
 
-    public SlimeSlab(Properties properties) {
+    public SlimeSlabBlock(Properties properties) {
         super(properties);
     }
 
@@ -134,4 +134,8 @@ public class SlimeSlab extends SlabBlock {
         }
     }
 
+    @Override
+    public boolean pl$canUnMerge(BlockState state, BlockGetter level, BlockPos pos, BlockState neighborState, Direction dir) {
+        return false;
+    }
 }

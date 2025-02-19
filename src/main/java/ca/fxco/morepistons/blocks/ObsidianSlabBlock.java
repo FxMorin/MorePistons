@@ -34,9 +34,9 @@ public class ObsidianSlabBlock extends SlabBlock {
             return false;
         }
         if (direction == Direction.UP) {
-            return type2 != SlabType.BOTTOM && type1 == SlabType.BOTTOM;
-        } else if (direction == Direction.DOWN) {
             return type2 != SlabType.TOP && type1 == SlabType.TOP;
+        } else if (direction == Direction.DOWN) {
+            return type2 != SlabType.BOTTOM && type1 == SlabType.BOTTOM;
         }
         return true;
     }

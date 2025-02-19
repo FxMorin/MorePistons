@@ -1,4 +1,4 @@
-package ca.fxco.morepistons.blocks.halfBlocks;
+package ca.fxco.morepistons.blocks;
 
 import ca.fxco.pistonlib.PistonLib;
 import ca.fxco.pistonlib.api.pistonLogic.sticky.StickRules;
@@ -9,8 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,7 +16,6 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HoneyBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -28,7 +25,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -41,7 +37,7 @@ import java.util.Optional;
 import static ca.fxco.morepistons.utils.HalfBlockUtils.SIDES_LIST;
 import static net.minecraft.world.level.block.SlabBlock.WATERLOGGED;
 
-public class HoneySlab extends HoneyBlock implements SimpleWaterloggedBlock {
+public class HoneySlabBlock extends HoneyBlock implements SimpleWaterloggedBlock {
     protected static final VoxelShape BOTTOM_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     protected static final VoxelShape TOP_SHAPE = Block.box(0.0, 8.0, 0.0, 16.0, 16.0, 16.0);
     protected static final VoxelShape BOTTOM_COLLISION_SHAPE = Block.box(1.0, 1.0, 1.0, 15.0, 7.0, 15.0);
@@ -50,7 +46,7 @@ public class HoneySlab extends HoneyBlock implements SimpleWaterloggedBlock {
     public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
     public static final Map<Direction, StickyType> STICKY_SIDES = new HashMap<>();
 
-    public HoneySlab(Properties properties) {
+    public HoneySlabBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(TYPE, SlabType.BOTTOM)
                 .setValue(WATERLOGGED, false));
@@ -239,6 +235,11 @@ public class HoneySlab extends HoneyBlock implements SimpleWaterloggedBlock {
         for (Direction direction : PistonLib.DIRECTIONS) {
             STICKY_SIDES.put(direction, StickyType.STICKY);
         }
+    }
+
+    @Override
+    public boolean pl$canUnMerge(BlockState state, BlockGetter level, BlockPos pos, BlockState neighborState, Direction dir) {
+        return false;
     }
 
 }

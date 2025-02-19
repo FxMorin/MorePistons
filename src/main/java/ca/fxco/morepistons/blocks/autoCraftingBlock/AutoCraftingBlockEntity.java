@@ -157,7 +157,7 @@ public class AutoCraftingBlockEntity extends BaseContainerBlockEntity implements
 
     @Override
     protected Component getDefaultName() {
-        return Component.translatable("container.pistonlib.auto_crafting_block");
+        return Component.translatable("container.morepistons.auto_crafting_block");
     }
 
     @Override
