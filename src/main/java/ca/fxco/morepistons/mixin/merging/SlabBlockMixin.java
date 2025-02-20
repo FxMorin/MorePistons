@@ -73,25 +73,18 @@ public class SlabBlockMixin implements PLBlockBehaviour {
         SlabType firstType;
         SlabType secondType;
 
-        if (direction.getAxis() == Direction.Axis.Y) {
-            if (direction == Direction.DOWN) {
-                firstType = SlabType.BOTTOM;
-                secondType = SlabType.TOP;
-            } else {
-                firstType = SlabType.TOP;
-                secondType = SlabType.BOTTOM;
-            }
-        } else {
-            SlabType type = pullingState.getValue(pullingState.hasProperty(BlockStateProperties.SLAB_TYPE) ?
+        SlabType type = null;
+        if (direction.getAxis() != Direction.Axis.Y) {
+            type = pullingState.getValue(pullingState.hasProperty(BlockStateProperties.SLAB_TYPE) ?
                     BlockStateProperties.SLAB_TYPE : SlabPistonHeadBlock.SLAB_TYPE);
+        }
 
-            if (type == SlabType.BOTTOM) {
-                firstType = type;
-                secondType = SlabType.TOP;
-            } else {
-                firstType = type;
-                secondType = SlabType.BOTTOM;
-            }
+        if (type == SlabType.BOTTOM || direction == Direction.DOWN) {
+            firstType = SlabType.BOTTOM;
+            secondType = SlabType.TOP;
+        } else {
+            firstType = SlabType.TOP;
+            secondType = SlabType.BOTTOM;
         }
 
         return new Pair<>(
@@ -99,4 +92,5 @@ public class SlabBlockMixin implements PLBlockBehaviour {
                 state.setValue(BlockStateProperties.SLAB_TYPE, secondType)
         );
     }
+
 }
