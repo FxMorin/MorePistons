@@ -45,13 +45,14 @@ public class ConfigurableMovingBlock extends BasicMovingBlock {
                 BlockPos frontPos = pos.relative(facing);
                 if (level.getBlockEntity(frontPos) instanceof ConfigurableMovingBlockEntity bmbe &&
                         !bmbe.extending && bmbe.progress == progress) {
+                    positions.add(frontPos);
                     if (bmbe.movedState.pl$usesConfigurablePistonStickiness() && bmbe.movedState.pl$isSticky()) {
                         stuckNeighbors(level, frontPos, bmbe.movedState.pl$stickySides(), bmbe, positions);
                     }
                     bmbe.finalTick();
                 }
                 pistonController.checkIfExtend(level, pos, movingBlockEntity.movedState, false);
-                int progressInt = Float.floatToIntBits(1 - progress);
+                int progressInt = (int) ((1 - progress) * 255);
                 level.blockEvent(frontPos, this, 99, progressInt);
                 for (BlockPos pos9 : positions) {
                     level.blockEvent(pos9.relative(facing), this, 99, progressInt);
@@ -94,7 +95,7 @@ public class ConfigurableMovingBlock extends BasicMovingBlock {
 
     public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int type, int data) {
         if (type == 99 && level.getBlockEntity(blockPos) instanceof BasicMovingBlockEntity bmbe) {
-            bmbe.progress = bmbe.progressO = Float.intBitsToFloat(data);
+            bmbe.progress = bmbe.progressO = data / 255F;
         }
         return true;
     }
