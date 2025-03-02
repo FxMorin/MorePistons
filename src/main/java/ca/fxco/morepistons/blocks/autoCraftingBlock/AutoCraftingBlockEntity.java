@@ -3,9 +3,11 @@ package ca.fxco.morepistons.blocks.autoCraftingBlock;
 import ca.fxco.morepistons.MorePistonsConfig;
 import ca.fxco.pistonlib.api.pistonLogic.base.PLMergeBlockEntity;
 import ca.fxco.morepistons.base.ModBlockEntities;
+import ca.fxco.pistonlib.base.ModTags;
 import ca.fxco.pistonlib.blocks.mergeBlock.MergeBlockEntity;
 import ca.fxco.pistonlib.helpers.NbtUtils;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -183,14 +186,27 @@ public class AutoCraftingBlockEntity extends BaseContainerBlockEntity implements
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack itemStack, @Nullable Direction direction) {
         // Allow items to be pushed into the block if they are not block items
+        LogUtils.getLogger().warn(String.valueOf(itemStack));
+        if (itemStack.getItem() instanceof BlockItem blockItem) {
+            LogUtils.getLogger().warn(String.valueOf(blockItem.getBlock().defaultBlockState().getPistonPushReaction()));
+        }
+        LogUtils.getLogger().warn(String.valueOf(itemStack));
         return slot != RESULT_SLOT && this.getItem(slot).isEmpty() && direction == null &&
-                !(itemStack.getItem() instanceof BlockItem);
+                (!(itemStack.getItem() instanceof BlockItem blockItem)
+                        || blockItem.getBlock().defaultBlockState().getPistonPushReaction() != PushReaction.NORMAL &&
+                        blockItem.getBlock().defaultBlockState().getPistonPushReaction() != PushReaction.PUSH_ONLY ||
+                        (!blockItem.getBlock().defaultBlockState().pl$getPistonMoveBehaviorOverride().isPresent() &&
+                        blockItem.getBlock().defaultBlockState().is(ModTags.UNPUSHABLE)));
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return direction == Direction.DOWN && // Rare or higher blocks can be used as filters ;)
-                (!(stack.getItem() instanceof BlockItem) || stack.getRarity().ordinal() >= Rarity.RARE.ordinal());
+                (!(stack.getItem() instanceof BlockItem blockItem)
+                        || stack.getRarity().ordinal() >= Rarity.RARE.ordinal()
+                        || blockItem.getBlock().defaultBlockState().getPistonPushReaction() != PushReaction.NORMAL ||
+                        (!blockItem.getBlock().defaultBlockState().pl$getPistonMoveBehaviorOverride().isPresent() &&
+                                blockItem.getBlock().defaultBlockState().is(ModTags.UNPUSHABLE)));
     }
 
     @Override
