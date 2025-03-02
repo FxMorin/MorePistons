@@ -1,8 +1,8 @@
 package ca.fxco.morepistons.blocks.autoCraftingBlock;
 
 import ca.fxco.morepistons.MorePistonsConfig;
-import ca.fxco.pistonlib.api.pistonLogic.base.PLMergeBlockEntity;
 import ca.fxco.morepistons.base.ModBlockEntities;
+import ca.fxco.pistonlib.api.pistonLogic.base.PLMergeBlockEntity;
 import ca.fxco.pistonlib.base.ModTags;
 import ca.fxco.pistonlib.blocks.mergeBlock.MergeBlockEntity;
 import ca.fxco.pistonlib.helpers.NbtUtils;
@@ -11,24 +11,34 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.*;
+import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -120,8 +130,23 @@ public class AutoCraftingBlockEntity extends BaseContainerBlockEntity implements
     @Override
     public void pl$afterInitialFinalMerge(BlockState finalState,
                                           Map<Direction, PLMergeBlockEntity.MergeData> mergedData) {
+        if (!(this.level instanceof ServerLevel)) {
+            return;
+        }
+
+        ItemStack itemStack = Items.NETHERITE_PICKAXE.getDefaultInstance();
+        itemStack.enchant(this.level.registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), 1);
+        LootParams.Builder lootParams = new LootParams.Builder((ServerLevel) this.level)
+                .withParameter(LootContextParams.TOOL, itemStack)
+                .withParameter(LootContextParams.ORIGIN, this.getBlockPos().getCenter());;
         for (PLMergeBlockEntity.MergeData data : mergedData.values()) {
-            setItem(getNextSlot(), data.getState().getBlock().asItem().getDefaultInstance());
+            List<ItemStack> itemStacks = data.getState().getDrops(lootParams);
+            if (itemStacks.size() != 1) {
+                setItem(getNextSlot(), data.getState().getBlock().asItem().getDefaultInstance());
+            } else {
+                setItem(getNextSlot(), itemStacks.getFirst());
+            }
         }
     }
 
