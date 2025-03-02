@@ -7,7 +7,6 @@ import ca.fxco.pistonlib.base.ModTags;
 import ca.fxco.pistonlib.blocks.mergeBlock.MergeBlockEntity;
 import ca.fxco.pistonlib.helpers.NbtUtils;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -186,11 +185,6 @@ public class AutoCraftingBlockEntity extends BaseContainerBlockEntity implements
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack itemStack, @Nullable Direction direction) {
         // Allow items to be pushed into the block if they are not block items
-        LogUtils.getLogger().warn(String.valueOf(itemStack));
-        if (itemStack.getItem() instanceof BlockItem blockItem) {
-            LogUtils.getLogger().warn(String.valueOf(blockItem.getBlock().defaultBlockState().getPistonPushReaction()));
-        }
-        LogUtils.getLogger().warn(String.valueOf(itemStack));
         return slot != RESULT_SLOT && this.getItem(slot).isEmpty() && direction == null &&
                 (!(itemStack.getItem() instanceof BlockItem blockItem)
                         || blockItem.getBlock().defaultBlockState().getPistonPushReaction() != PushReaction.NORMAL &&
